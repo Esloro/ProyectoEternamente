@@ -166,3 +166,4 @@ docker run -d -p 80:80 wedding-planner-frontend:prod
 - [x] **Paso 9 — Chat con polling** (cliente ↔ admin, intervalo 7 s, marcado de leídos).
 - [x] **Paso 10 — Build de producción limpio** (sin errores TypeScript ni errores de build).
 # ProyectoIntermodular
+# ProyectoIntermodular
