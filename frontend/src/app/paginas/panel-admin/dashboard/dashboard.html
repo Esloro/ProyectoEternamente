@@ -1,0 +1,129 @@
+<div class="dashboard-pagina">
+  <div class="dashboard-cabecera">
+    <span class="dashboard-saludo">Panel de administración</span>
+    <h1>Bienvenida de nuevo</h1>
+    <p>Un vistazo rápido a tu agencia. Pulsa una tarjeta para entrar.</p>
+    <div class="dashboard-divisor" aria-hidden="true">
+      <span></span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span></span>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando() && datos()) {
+    <div class="tarjetas-grid">
+
+      <a routerLink="/admin/clientes" class="tarjeta tarjeta-clientes">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Clientes</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.clientes_total }}</span>
+          <span class="tarjeta-sub">registrados en la plataforma</span>
+        </div>
+        <div class="tarjeta-pie">
+          <span class="tarjeta-accion">Ver clientes</span>
+          <span class="tarjeta-flecha" aria-hidden="true">→</span>
+        </div>
+      </a>
+
+      <a routerLink="/admin/bodas" [queryParams]="{ estado: 'activa' }" class="tarjeta tarjeta-activas">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Bodas</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.bodas.activas }}</span>
+          <span class="tarjeta-sub">bodas activas en preparación</span>
+        </div>
+        <div class="tarjeta-pie">
+          <span class="tarjeta-accion">Ver bodas activas</span>
+          <span class="tarjeta-flecha" aria-hidden="true">→</span>
+        </div>
+      </a>
+
+      <a routerLink="/admin/bodas" [queryParams]="{ estado: 'pendiente_reunion' }" class="tarjeta tarjeta-pendientes">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Reuniones</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.bodas.pendiente_reunion }}</span>
+          <span class="tarjeta-sub">clientes esperan primera cita</span>
+        </div>
+        <div class="tarjeta-pie">
+          <span class="tarjeta-accion">Gestionar agenda</span>
+          <span class="tarjeta-flecha" aria-hidden="true">→</span>
+        </div>
+      </a>
+
+      <div class="tarjeta tarjeta-ingresos tarjeta-estatica">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7a6 6 0 0 0-9.9 2"/><path d="M18 17a6 6 0 0 1-9.9-2"/><line x1="4" y1="10" x2="14" y2="10"/><line x1="4" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Ingresos</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.ingresos_estimados | number:'1.0-0' }}<small> €</small></span>
+          <span class="tarjeta-sub">estimación total por presupuestos</span>
+        </div>
+        <div class="tarjeta-pie tarjeta-pie-info">
+          <span class="tarjeta-accion-info">Resumen estimado</span>
+        </div>
+      </div>
+
+      <a routerLink="/admin/mensajes-contacto" class="tarjeta tarjeta-mensajes">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Mensajes</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.mensajes_no_leidos }}</span>
+          <span class="tarjeta-sub">solicitudes sin leer</span>
+        </div>
+        <div class="tarjeta-pie">
+          <span class="tarjeta-accion">Abrir bandeja</span>
+          <span class="tarjeta-flecha" aria-hidden="true">→</span>
+        </div>
+      </a>
+
+      <a routerLink="/admin/chat" class="tarjeta tarjeta-chat">
+        <div class="tarjeta-decoracion" aria-hidden="true"></div>
+        <div class="tarjeta-cabecera">
+          <div class="tarjeta-icono">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <span class="tarjeta-etiqueta">Chat</span>
+        </div>
+        <div class="tarjeta-cuerpo">
+          <span class="tarjeta-valor">{{ datos()!.chats_no_leidos }}</span>
+          <span class="tarjeta-sub">mensajes de chat sin leer</span>
+        </div>
+        <div class="tarjeta-pie">
+          <span class="tarjeta-accion">Abrir chat</span>
+          <span class="tarjeta-flecha" aria-hidden="true">→</span>
+        </div>
+      </a>
+
+    </div>
+  }
+</div>

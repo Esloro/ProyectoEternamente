@@ -1,0 +1,50 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Testimonios</h1>
+    <button class="boton-primario" (click)="abrirModal()">+ Nuevo testimonio</button>
+  </div>
+
+  @if (cargando()) { <div class="cargando-contenedor"><div class="spinner"></div></div> }
+
+  @if (!cargando()) {
+    <div class="testimonios-grid">
+      @for (t of testimonios(); track t.id) {
+        <div class="testimonio-card">
+          <div class="test-cabecera">
+            <strong>{{ t.nombre_cliente }}</strong>
+            @if (t.verificado) { <span class="badge-si">Verificado</span> }
+          </div>
+          <span class="estrellas">{{ estrellas(t.valoracion) }}</span>
+          <p>{{ t.comentario }}</p>
+          <div class="test-acciones">
+            <button class="btn-accion" (click)="abrirModal(t)">Editar</button>
+            <button class="btn-accion eliminar" (click)="eliminar(t.id)">Eliminar</button>
+          </div>
+        </div>
+      }
+      @if (testimonios().length === 0) {
+        <div class="vacio">No hay testimonios.</div>
+      }
+    </div>
+  }
+</div>
+
+@if (modalAbierto()) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>{{ editando() ? 'Editar testimonio' : 'Nuevo testimonio' }}</h2>
+      <form [formGroup]="form" class="modal-form">
+        <div class="campo"><label>Nombre del cliente</label><input type="text" formControlName="nombre_cliente"></div>
+        <div class="campo"><label>Comentario</label><textarea formControlName="comentario" rows="3"></textarea></div>
+        <div class="campo"><label>Valoración (1-5)</label><input type="number" formControlName="valoracion" min="1" max="5"></div>
+        <div class="campo"><label>Foto URL (opcional)</label><input type="url" formControlName="foto"></div>
+        <div class="campo campo-check"><label><input type="checkbox" formControlName="verificado"> Verificado</label></div>
+        @if (error()) { <div class="auth-alerta error">{{ error() }}</div> }
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="boton-primario" [disabled]="form.invalid || guardando()" (click)="guardar()">{{ guardando() ? '…' : 'Guardar' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

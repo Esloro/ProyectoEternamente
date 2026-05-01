@@ -1,0 +1,124 @@
+.portfolio {
+  background: var(--color-blanco-roto);
+}
+
+.estado {
+  text-align: center;
+  color: var(--color-texto-secundario);
+}
+
+.grid-portfolio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espacio-sm);
+}
+
+.item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radio-medio);
+  cursor: pointer;
+  aspect-ratio: 4 / 3;
+  box-shadow: var(--sombra-suave);
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transicion-lenta);
+}
+
+.item .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.75) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--espacio-sm);
+  color: var(--color-blanco);
+  opacity: 0;
+  transition: opacity var(--transicion-media);
+}
+
+.item .overlay h3 {
+  color: var(--color-blanco);
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.item .overlay p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.item:hover img {
+  transform: scale(1.08);
+}
+
+.item:hover .overlay {
+  opacity: 1;
+}
+
+@media (max-width: 900px) { .grid-portfolio { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .grid-portfolio { grid-template-columns: 1fr; } }
+
+/* ----- Modal ----- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espacio-sm);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-contenido {
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+  overflow: hidden;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInArriba 0.4s ease-out;
+}
+
+.modal-contenido img {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: cover;
+}
+
+.modal-texto {
+  padding: var(--espacio-md);
+}
+
+.modal-texto h3 {
+  margin-bottom: var(--espacio-xs);
+}
+
+.cerrar {
+  position: fixed;
+  top: var(--espacio-sm);
+  right: var(--espacio-sm);
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-blanco);
+  border-radius: 50%;
+  font-size: 2rem;
+  line-height: 1;
+  z-index: 2001;
+  transition: background var(--transicion-rapida);
+}
+
+.cerrar:hover {
+  background: rgba(255, 255, 255, 0.4);
+}

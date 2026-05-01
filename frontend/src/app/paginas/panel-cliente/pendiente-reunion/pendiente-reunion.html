@@ -1,0 +1,75 @@
+<div class="pendiente-pagina">
+
+  <div class="pendiente-cabecera">
+    <div class="icono-estado">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <h1>¡Hemos recibido vuestro cuestionario!</h1>
+    <p>Estamos revisando todos los detalles y pronto nos pondremos en contacto contigo para organizar una reunión inicial.</p>
+  </div>
+
+  <!-- Resumen del cuestionario -->
+  @if (!cargando() && boda()) {
+    <div class="pendiente-resumen">
+      <h2>Detalles de tu boda</h2>
+      <div class="resumen-grid">
+        <div class="resumen-item">
+          <span class="etiqueta">Fecha</span>
+          <span class="valor">{{ formatearFecha(boda()!.fecha_boda) }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="etiqueta">Ceremonia</span>
+          <span class="valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="etiqueta">Invitados</span>
+          <span class="valor">{{ boda()!.num_invitados }} personas</span>
+        </div>
+        <div class="resumen-item">
+          <span class="etiqueta">Horario</span>
+          <span class="valor">{{ etiquetasFranja[boda()!.franja_horaria] }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="etiqueta">Temática</span>
+          <span class="valor">{{ etiquetasTematica[boda()!.tematica] }}</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Pasos siguientes -->
+  <div class="pasos-siguientes">
+    <h2>¿Qué pasa ahora?</h2>
+    <ol class="timeline">
+      <li class="timeline-item completado">
+        <div class="timeline-icono">✓</div>
+        <div class="timeline-contenido">
+          <strong>Cuestionario completado</strong>
+          <p>Hemos recibido todos los detalles de vuestra boda.</p>
+        </div>
+      </li>
+      <li class="timeline-item activo">
+        <div class="timeline-icono">2</div>
+        <div class="timeline-contenido">
+          <strong>Reunión inicial</strong>
+          <p>Nos pondremos en contacto contigo en las próximas 48h para concertar una reunión y conocernos.</p>
+        </div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-icono">3</div>
+        <div class="timeline-contenido">
+          <strong>Panel desbloqueado</strong>
+          <p>Tras la reunión activaremos tu panel completo: selección de proveedores, organizador de mesas, presupuesto y chat.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- Acciones -->
+  <div class="pendiente-acciones">
+    <a routerLink="/panel/perfil" class="boton-secundario">Ver mi perfil</a>
+  </div>
+</div>

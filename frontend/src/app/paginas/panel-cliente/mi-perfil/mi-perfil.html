@@ -1,0 +1,95 @@
+<div class="perfil-pagina">
+  <div class="pagina-cabecera">
+    <h1>Mi perfil</h1>
+    <p>Gestiona tus datos personales y contraseña de acceso.</p>
+  </div>
+
+  <div class="perfil-layout">
+
+    <!-- Datos personales -->
+    <div class="perfil-seccion">
+      <h2>Datos personales</h2>
+
+      <form [formGroup]="formPerfil" class="perfil-form">
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" formControlName="nombre"
+              [class.invalido]="formPerfil.get('nombre')?.invalid && formPerfil.get('nombre')?.touched">
+            @if (formPerfil.get('nombre')?.invalid && formPerfil.get('nombre')?.touched) {
+              <span class="error-campo">El nombre es obligatorio</span>
+            }
+          </div>
+          <div class="campo">
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" type="text" formControlName="apellidos"
+              [class.invalido]="formPerfil.get('apellidos')?.invalid && formPerfil.get('apellidos')?.touched">
+            @if (formPerfil.get('apellidos')?.invalid && formPerfil.get('apellidos')?.touched) {
+              <span class="error-campo">Los apellidos son obligatorios</span>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="email">Correo electrónico</label>
+          <input id="email" type="email" [value]="auth.usuario()?.email" readonly>
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono (opcional)</label>
+          <input id="telefono" type="tel" formControlName="telefono" placeholder="+34 600 000 000">
+        </div>
+
+        @if (exitoPerfil()) { <div class="auth-alerta exito">{{ exitoPerfil() }}</div> }
+        @if (errorPerfil()) { <div class="auth-alerta error">{{ errorPerfil() }}</div> }
+
+        <div class="form-acciones">
+          <button type="submit" class="boton-primario" [disabled]="formPerfil.invalid || guardandoPerfil()" (click)="guardarPerfil()">
+            {{ guardandoPerfil() ? 'Guardando…' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Cambiar contraseña -->
+    <div class="perfil-seccion">
+      <h2>Cambiar contraseña</h2>
+
+      <form [formGroup]="formPassword" class="perfil-form">
+        <div class="campo">
+          <label for="pass-actual">Contraseña actual</label>
+          <input id="pass-actual" type="password" formControlName="password_actual"
+            [class.invalido]="formPassword.get('password_actual')?.invalid && formPassword.get('password_actual')?.touched">
+        </div>
+
+        <div class="campo">
+          <label for="pass-nueva">Nueva contraseña</label>
+          <input id="pass-nueva" type="password" formControlName="password" placeholder="Mínimo 8 caracteres"
+            [class.invalido]="formPassword.get('password')?.invalid && formPassword.get('password')?.touched">
+          @if (formPassword.get('password')?.invalid && formPassword.get('password')?.touched) {
+            <span class="error-campo">Mínimo 8 caracteres</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label for="pass-confirmar">Confirmar nueva contraseña</label>
+          <input id="pass-confirmar" type="password" formControlName="password_confirmation"
+            [class.invalido]="(formPassword.hasError('noCoinciden') || formPassword.get('password_confirmation')?.invalid) && formPassword.get('password_confirmation')?.touched">
+          @if (formPassword.hasError('noCoinciden') && formPassword.get('password_confirmation')?.touched) {
+            <span class="error-campo">Las contraseñas no coinciden</span>
+          }
+        </div>
+
+        @if (exitoPassword()) { <div class="auth-alerta exito">{{ exitoPassword() }}</div> }
+        @if (errorPassword()) { <div class="auth-alerta error">{{ errorPassword() }}</div> }
+
+        <div class="form-acciones">
+          <button type="submit" class="boton-primario" [disabled]="formPassword.invalid || guardandoPassword()" (click)="cambiarPassword()">
+            {{ guardandoPassword() ? 'Cambiando…' : 'Cambiar contraseña' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

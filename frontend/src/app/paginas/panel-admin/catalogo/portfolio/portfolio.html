@@ -1,0 +1,49 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Portfolio</h1>
+    <button class="boton-primario" (click)="abrirModal()">+ Nueva foto</button>
+  </div>
+
+  @if (cargando()) { <div class="cargando-contenedor"><div class="spinner"></div></div> }
+
+  @if (!cargando()) {
+    <div class="portfolio-grid">
+      @for (item of items(); track item.id) {
+        <div class="portfolio-card">
+          <img [src]="item.foto" [alt]="item.titulo" class="portfolio-img">
+          <div class="portfolio-info">
+            <strong>{{ item.titulo }}</strong>
+            @if (item.descripcion) { <p>{{ item.descripcion }}</p> }
+            <span class="orden-badge">Orden: {{ item.orden }}</span>
+          </div>
+          <div class="portfolio-acciones">
+            <button class="btn-accion" (click)="abrirModal(item)">Editar</button>
+            <button class="btn-accion eliminar" (click)="eliminar(item.id)">Eliminar</button>
+          </div>
+        </div>
+      }
+      @if (items().length === 0) {
+        <div class="vacio">No hay elementos en el portfolio. Añade el primero.</div>
+      }
+    </div>
+  }
+</div>
+
+@if (modalAbierto()) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>{{ editando() ? 'Editar foto' : 'Nueva foto' }}</h2>
+      <form [formGroup]="form" class="modal-form">
+        <div class="campo"><label>Título</label><input type="text" formControlName="titulo"></div>
+        <div class="campo"><label>URL de la foto</label><input type="url" formControlName="foto" placeholder="https://…"></div>
+        <div class="campo"><label>Descripción (opcional)</label><textarea formControlName="descripcion" rows="2"></textarea></div>
+        <div class="campo"><label>Orden de aparición</label><input type="number" formControlName="orden" min="0"></div>
+        @if (error()) { <div class="auth-alerta error">{{ error() }}</div> }
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="boton-primario" [disabled]="form.invalid || guardando()" (click)="guardar()">{{ guardando() ? '…' : 'Guardar' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,65 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Mensajes de contacto</h1>
+    <p>Consultas recibidas a través del formulario de la web.</p>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+    <div class="mensajes-layout">
+      <!-- Lista -->
+      <div class="mensajes-lista">
+        @if (mensajes().length === 0) {
+          <div class="vacio">No hay mensajes de contacto.</div>
+        }
+        @for (msg of mensajes(); track msg.id) {
+          <div
+            class="mensaje-item"
+            [class.no-leido]="!msg.leido"
+            [class.activo]="mensajeAbierto()?.id === msg.id"
+            (click)="abrirMensaje(msg)"
+          >
+            <div class="msg-cabecera">
+              <strong>{{ msg.nombre }}</strong>
+              @if (!msg.leido) { <span class="punto-no-leido"></span> }
+            </div>
+            <span class="msg-email">{{ msg.email }}</span>
+            <p class="msg-preview">{{ msg.mensaje }}</p>
+            <span class="msg-fecha">{{ msg.created_at | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Detalle -->
+      <div class="mensaje-detalle">
+        @if (!mensajeAbierto()) {
+          <div class="detalle-vacio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <p>Selecciona un mensaje para verlo</p>
+          </div>
+        }
+        @if (mensajeAbierto()) {
+          <div class="detalle-contenido">
+            <div class="detalle-cabecera">
+              <div>
+                <h2>{{ mensajeAbierto()!.nombre }}</h2>
+                <a [href]="'mailto:' + mensajeAbierto()!.email" class="detalle-email">{{ mensajeAbierto()!.email }}</a>
+                @if (mensajeAbierto()!.telefono) {
+                  <span class="detalle-tel"> · {{ mensajeAbierto()!.telefono }}</span>
+                }
+              </div>
+              <button class="btn-eliminar" (click)="eliminar(mensajeAbierto()!.id)" title="Eliminar mensaje">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              </button>
+            </div>
+            <span class="detalle-fecha">{{ mensajeAbierto()!.created_at | date:'EEEE, d MMMM yyyy HH:mm':'':'es-ES' }}</span>
+            <div class="detalle-mensaje">{{ mensajeAbierto()!.mensaje }}</div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

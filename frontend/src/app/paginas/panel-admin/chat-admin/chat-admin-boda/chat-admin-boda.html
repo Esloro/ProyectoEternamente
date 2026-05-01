@@ -1,0 +1,38 @@
+<div class="chat-admin-boda">
+  <div class="chat-cabecera">
+    <a routerLink="/admin/chat" class="volver">← Volver</a>
+    @if (boda()) {
+      <h2>Boda #{{ boda()!.id }} — {{ boda()!.fecha_boda | date:'dd/MM/yyyy' }}</h2>
+    }
+  </div>
+
+  <div class="chat-mensajes" #contenedorMensajes>
+    @if (cargando()) {
+      <div class="chat-cargando">Cargando conversación…</div>
+    }
+    @if (!cargando() && mensajes().length === 0) {
+      <div class="chat-vacio">Sin mensajes aún. Inicia la conversación.</div>
+    }
+    @for (msg of mensajes(); track msg.id) {
+      <div class="mensaje-grupo" [class.propio]="esMio(msg)" [class.ajeno]="!esMio(msg)">
+        <div class="mensaje-burbuja">
+          <p>{{ msg.contenido }}</p>
+          <span class="mensaje-hora">{{ msg.created_at | date:'HH:mm':'':'es-ES' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="chat-entrada">
+    <textarea
+      class="chat-input"
+      placeholder="Responder al cliente…"
+      [formControl]="texto"
+      (keydown)="onKeydown($event)"
+      rows="1"
+    ></textarea>
+    <button class="chat-enviar" [disabled]="!texto.value?.trim() || enviando()" (click)="enviar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>

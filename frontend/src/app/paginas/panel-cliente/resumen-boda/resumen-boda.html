@@ -1,0 +1,156 @@
+<div class="resumen-pagina">
+
+  @if (cargando()) {
+    <div class="cargando-contenedor">
+      <div class="spinner"></div>
+      <p>Cargando información de tu boda…</p>
+    </div>
+  }
+
+  <!-- Sin boda: mostrar CTA para cuestionario -->
+  @if (!cargando() && !boda()) {
+    <div class="sin-boda">
+      <div class="sin-boda-icono">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h1>¡Bienvenida a WeddingPlanner!</h1>
+      <p>Todavía no has rellenado el cuestionario inicial. Solo te llevará unos minutos y nos ayudará a preparar la boda de tus sueños.</p>
+      <a routerLink="/panel/cuestionario" class="boton-primario">Empezar cuestionario</a>
+    </div>
+  }
+
+  <!-- Con boda -->
+  @if (!cargando() && boda()) {
+    <div class="resumen-contenido">
+
+      <!-- Cabecera con cuenta atrás -->
+      <div class="resumen-hero">
+        <div class="resumen-hero-texto">
+          <span class="etiqueta-estado {{ boda()!.estado }}">{{ etiquetasEstado[boda()!.estado] }}</span>
+          <h1>{{ boda()!.fecha_boda | date:'EEEE, d MMMM yyyy':'':'es-ES' }}</h1>
+          @if (boda()!.estado === 'pendiente_reunion') {
+            <p>Hemos recibido tu cuestionario y pronto nos pondremos en contacto contigo.</p>
+          } @else {
+            <p>Tu boda está en marcha. ¡Estamos aquí para que sea perfecta!</p>
+          }
+        </div>
+
+        @if (cuentaAtras() !== null && boda()!.estado === 'activa') {
+          <div class="cuenta-atras-card">
+            <span class="dias">{{ cuentaAtras() }}</span>
+            <span class="texto">días</span>
+          </div>
+        }
+      </div>
+
+      <!-- Tarjetas de estado para bodas activas -->
+      @if (boda()!.estado === 'activa') {
+        <div class="tarjetas-stats">
+          <div class="stat-card">
+            <div class="stat-icono invitados">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-valor">{{ boda()!.num_invitados }}</span>
+              <span class="stat-etiqueta">Invitados estimados</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icono presupuesto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="stat-info">
+              @if (boda()!.presupuesto_definitivo) {
+                <span class="stat-valor">{{ boda()!.presupuesto_definitivo | number:'1.0-0' }} €</span>
+                <span class="stat-etiqueta">Presupuesto definitivo</span>
+              } @else {
+                <span class="stat-valor">{{ boda()!.presupuesto_estimado | number:'1.0-0' }} €</span>
+                <span class="stat-etiqueta">Presupuesto estimado</span>
+              }
+            </div>
+          </div>
+
+          <div class="stat-card" [routerLink]="'/panel/personalizacion'">
+            <div class="stat-icono proveedores">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-valor">{{ boda()!.proveedores?.length ?? 0 }}</span>
+              <span class="stat-etiqueta">Proveedores elegidos</span>
+            </div>
+          </div>
+
+          <div class="stat-card" [routerLink]="'/panel/mesas'">
+            <div class="stat-icono mesas">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-valor">{{ boda()!.mesas?.length ?? 0 }}</span>
+              <span class="stat-etiqueta">Mesas configuradas</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Detalles de la boda -->
+      <div class="detalles-seccion">
+        <h2>Detalles de vuestra boda</h2>
+        <div class="detalles-grid">
+          <div class="detalle-item">
+            <span class="detalle-etiqueta">Tipo de ceremonia</span>
+            <span class="detalle-valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
+          </div>
+          @if (boda()!.iglesia) {
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Lugar de la ceremonia</span>
+              <span class="detalle-valor">{{ boda()!.iglesia }}</span>
+            </div>
+          }
+          <div class="detalle-item">
+            <span class="detalle-etiqueta">Horario</span>
+            <span class="detalle-valor">{{ etiquetasFranja[boda()!.franja_horaria] }}</span>
+          </div>
+          <div class="detalle-item">
+            <span class="detalle-etiqueta">Temática</span>
+            <span class="detalle-valor">{{ etiquetasTematica[boda()!.tematica] }}</span>
+          </div>
+          <div class="detalle-item">
+            <span class="detalle-etiqueta">Tipo de comida</span>
+            <span class="detalle-valor">{{ etiquetasComida[boda()!.tipo_comida] }}</span>
+          </div>
+          <div class="detalle-item">
+            <span class="detalle-etiqueta">Presupuesto orientativo</span>
+            <span class="detalle-valor">{{ etiquetasPresupuesto[boda()!.presupuesto_orientativo] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accesos rápidos para boda activa -->
+      @if (boda()!.estado === 'activa') {
+        <div class="accesos-rapidos">
+          <h2>Accesos rápidos</h2>
+          <div class="accesos-grid">
+            <a routerLink="/panel/personalizacion" class="acceso-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <span>Proveedores</span>
+            </a>
+            <a routerLink="/panel/mesas" class="acceso-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/></svg>
+              <span>Mesas</span>
+            </a>
+            <a routerLink="/panel/presupuesto" class="acceso-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Presupuesto</span>
+            </a>
+            <a routerLink="/panel/chat" class="acceso-card">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>Chat</span>
+            </a>
+          </div>
+        </div>
+      }
+
+    </div>
+  }
+</div>

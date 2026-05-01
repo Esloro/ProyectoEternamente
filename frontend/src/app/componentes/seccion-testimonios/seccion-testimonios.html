@@ -1,0 +1,57 @@
+<section id="testimonios" class="seccion testimonios" appScrollReveal>
+  <div class="contenedor">
+
+    <header class="seccion-titulo">
+      <span class="subtitulo">Lo que dicen nuestros novios</span>
+      <h2><span class="lineas-decorativas"></span> Testimonios <span class="lineas-decorativas"></span></h2>
+    </header>
+
+    @if (testimonios().length > 0) {
+      <div class="carrusel">
+
+        <button class="flecha izquierda" (click)="anterior()" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="pista" [style.transform]="'translateX(-' + (indiceActivo() * 100) + '%)'">
+          @for (testimonio of testimonios(); track testimonio.id) {
+            <article class="testimonio">
+              @if (testimonio.foto) {
+                <img class="foto" [src]="testimonio.foto" [alt]="testimonio.nombre_cliente">
+              }
+              <div class="estrellas">
+                @for (_ of estrellasLlenas(testimonio.valoracion); track $index) {
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="0" class="llena">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                }
+                @for (_ of estrellasVacias(testimonio.valoracion); track $index) {
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="vacia">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                }
+              </div>
+              <p class="comentario">"{{ testimonio.comentario }}"</p>
+              <p class="nombre">{{ testimonio.nombre_cliente }}</p>
+            </article>
+          }
+        </div>
+
+        <button class="flecha derecha" (click)="siguiente()" aria-label="Siguiente">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div class="indicadores">
+          @for (testimonio of testimonios(); track testimonio.id; let i = $index) {
+            <button
+              [class.activo]="i === indiceActivo()"
+              (click)="irA(i)"
+              [attr.aria-label]="'Ir al testimonio ' + (i + 1)">
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+</section>

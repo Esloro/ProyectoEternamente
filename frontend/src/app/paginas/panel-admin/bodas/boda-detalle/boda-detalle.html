@@ -1,0 +1,167 @@
+<div class="detalle-pagina">
+  <div class="pagina-cabecera">
+    <a routerLink="/admin/bodas" class="volver">← Volver a bodas</a>
+    <h1>Detalle de boda</h1>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (error() && !cargando()) {
+    <div class="auth-alerta error">{{ error() }}</div>
+  }
+
+  @if (exito()) {
+    <div class="auth-alerta exito">{{ exito() }}</div>
+  }
+
+  @if (!cargando() && boda()) {
+    <div class="detalle-grid">
+
+      <!-- Columna izquierda -->
+      <div class="col-izq">
+
+        <!-- Estado y acciones -->
+        <div class="seccion-card">
+          <h2>Estado de la boda</h2>
+          <div class="estado-actual">
+            <span class="etiqueta-estado {{ boda()!.estado }}">{{ etiquetasEstado[boda()!.estado] }}</span>
+          </div>
+
+          @if (transicionesEstado[boda()!.estado].length > 0) {
+            <div class="estado-acciones">
+              <p>Cambiar estado a:</p>
+              <div class="estado-botones">
+                @for (estado of transicionesEstado[boda()!.estado]; track estado) {
+                  <button
+                    class="boton-estado"
+                    [class.activar]="estado === 'activa'"
+                    [class.finalizar]="estado === 'finalizada'"
+                    [class.cancelar]="estado === 'cancelada'"
+                    [disabled]="cambiandoEstado()"
+                    (click)="cambiarEstado(estado)"
+                  >
+                    {{ etiquetasEstado[estado] }}
+                  </button>
+                }
+              </div>
+              @if (boda()!.estado === 'pendiente_reunion') {
+                <p class="nota-estado">
+                  Al activar la boda el cliente tendrá acceso completo al panel: proveedores, mesas, chat y presupuesto.
+                </p>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Presupuesto -->
+        <div class="seccion-card">
+          <h2>Presupuesto</h2>
+          <div class="presupuesto-info">
+            <div class="pres-item">
+              <span class="pres-etiqueta">Estimado (proveedores)</span>
+              <span class="pres-valor">{{ boda()!.presupuesto_estimado | number:'1.2-2' }} €</span>
+            </div>
+            @if (boda()!.presupuesto_definitivo) {
+              <div class="pres-item definitivo">
+                <span class="pres-etiqueta">Definitivo</span>
+                <span class="pres-valor">{{ boda()!.presupuesto_definitivo | number:'1.2-2' }} €</span>
+              </div>
+            }
+          </div>
+
+          <div class="presupuesto-form">
+            <label>Fijar presupuesto definitivo (€)</label>
+            <div class="pres-input-grupo">
+              <input
+                type="number"
+                [formControl]="presupuestoCtrl"
+                placeholder="0.00"
+                min="0"
+                step="100"
+              >
+              <button
+                class="boton-primario"
+                [disabled]="presupuestoCtrl.invalid || guardandoPresupuesto()"
+                (click)="fijarPresupuesto()"
+              >
+                {{ guardandoPresupuesto() ? '…' : 'Guardar' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones rápidas -->
+        <div class="seccion-card">
+          <h2>Acciones</h2>
+          <div class="acciones-rapidas">
+            <a [routerLink]="'/admin/chat/' + boda()!.id" class="accion-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Chat con el cliente
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: detalles -->
+      <div class="col-der">
+        <div class="seccion-card">
+          <h2>Información de la boda</h2>
+          <div class="detalles-grid">
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Fecha</span>
+              <span class="detalle-valor">{{ boda()!.fecha_boda | date:'EEEE, d MMMM yyyy':'':'es-ES' }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Ceremonia</span>
+              <span class="detalle-valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
+            </div>
+            @if (boda()!.iglesia) {
+              <div class="detalle-item">
+                <span class="detalle-etiqueta">Lugar</span>
+                <span class="detalle-valor">{{ boda()!.iglesia }}</span>
+              </div>
+            }
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Invitados</span>
+              <span class="detalle-valor">{{ boda()!.num_invitados }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Horario</span>
+              <span class="detalle-valor">{{ etiquetasFranja[boda()!.franja_horaria] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Temática</span>
+              <span class="detalle-valor">{{ etiquetasTematica[boda()!.tematica] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Comida</span>
+              <span class="detalle-valor">{{ etiquetasComida[boda()!.tipo_comida] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Pres. orientativo</span>
+              <span class="detalle-valor">{{ etiquetasPresupuesto[boda()!.presupuesto_orientativo] }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proveedores elegidos -->
+        @if (boda()!.proveedores && boda()!.proveedores!.length > 0) {
+          <div class="seccion-card">
+            <h2>Proveedores elegidos ({{ boda()!.proveedores!.length }})</h2>
+            <div class="proveedores-lista">
+              @for (prov of boda()!.proveedores!; track prov.id) {
+                <div class="prov-item">
+                  <span class="prov-categoria">{{ etiquetasCategoria[prov.categoria] }}</span>
+                  <span class="prov-nombre">{{ prov.nombre }}</span>
+                  <span class="prov-precio">{{ prov.precio | number:'1.0-0' }} €</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

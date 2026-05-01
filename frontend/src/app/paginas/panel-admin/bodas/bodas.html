@@ -1,0 +1,70 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Bodas</h1>
+    <p>Gestiona el estado de cada boda y sus presupuestos.</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros-barra">
+    <input
+      type="search"
+      class="buscador"
+      placeholder="Buscar por fecha, estado…"
+      (input)="onBusqueda($event)"
+    >
+    <div class="filtros-estado">
+      @for (e of estados; track e.valor) {
+        <button
+          class="filtro-btn"
+          [class.activo]="filtroEstado() === e.valor"
+          (click)="cambiarFiltro(e.valor)"
+        >{{ e.etiqueta }}</button>
+      }
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+    @if (bodas().length === 0) {
+      <div class="vacio">No hay bodas que coincidan con los filtros.</div>
+    } @else {
+      <div class="tabla-card">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Fecha boda</th>
+              <th>Invitados</th>
+              <th>Estado</th>
+              <th>Presupuesto</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (boda of bodas(); track boda.id) {
+              <tr>
+                <td class="id-col">{{ boda.id }}</td>
+                <td>{{ boda.fecha_boda | date:'dd/MM/yyyy' }}</td>
+                <td>{{ boda.num_invitados }}</td>
+                <td><span class="etiqueta-estado {{ boda.estado }}">{{ etiquetasEstado[boda.estado] }}</span></td>
+                <td>
+                  @if (boda.presupuesto_definitivo) {
+                    {{ boda.presupuesto_definitivo }} €
+                  } @else {
+                    ~{{ boda.presupuesto_estimado }} €
+                  }
+                </td>
+                <td>
+                  <a [routerLink]="'/admin/bodas/' + boda.id" class="boton-tabla">Ver detalle</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

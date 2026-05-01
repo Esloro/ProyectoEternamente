@@ -1,0 +1,84 @@
+<div class="presupuesto-pagina">
+  <div class="pagina-cabecera">
+    <h1>Presupuesto</h1>
+    <p>Resumen del coste estimado de vuestra boda basado en los proveedores elegidos.</p>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div><p>Cargando presupuesto…</p></div>
+  }
+
+  @if (!cargando() && boda()) {
+    <!-- Resumen total -->
+    <div class="presupuesto-total">
+      <div class="total-principal">
+        @if (boda()!.presupuesto_definitivo) {
+          <div class="total-item definitivo">
+            <span class="total-etiqueta">Presupuesto definitivo</span>
+            <span class="total-valor">{{ boda()!.presupuesto_definitivo | number:'1.2-2' }} €</span>
+            <span class="total-desc">Cerrado con WeddingPlanner</span>
+          </div>
+        } @else {
+          <div class="total-item estimado">
+            <span class="total-etiqueta">Presupuesto estimado</span>
+            <span class="total-valor">{{ boda()!.presupuesto_estimado | number:'1.2-2' }} €</span>
+            <span class="total-desc">Basado en los proveedores seleccionados</span>
+          </div>
+        }
+      </div>
+
+      @if (!boda()!.presupuesto_definitivo) {
+        <div class="solicitar-bloque">
+          @if (solicitudEnviada()) {
+            <div class="auth-alerta exito">
+              ¡Solicitud enviada! El equipo de WeddingPlanner revisará los detalles y te enviaremos el presupuesto definitivo en breve.
+            </div>
+          } @else {
+            <p>¿Listo para cerrar el presupuesto? Solicítanos un presupuesto definitivo y te lo enviaremos en 24-48 horas.</p>
+            <button class="boton-primario" [disabled]="solicitando()" (click)="solicitarPresupuesto()">
+              {{ solicitando() ? 'Enviando solicitud…' : 'Solicitar presupuesto definitivo' }}
+            </button>
+          }
+          @if (error()) {
+            <div class="auth-alerta error">{{ error() }}</div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Desglose por proveedor -->
+    <div class="desglose-seccion">
+      <h2>Desglose por proveedor</h2>
+
+      @if (proveedores().length === 0) {
+        <div class="sin-proveedores">
+          <p>Todavía no has seleccionado ningún proveedor. Ve a la sección de <a routerLink="/panel/personalizacion">Proveedores</a> para hacer tu selección.</p>
+        </div>
+      }
+
+      @if (proveedores().length > 0) {
+        <div class="tabla-desglose">
+          @for (prov of proveedores(); track prov.id) {
+            <div class="desglose-fila">
+              <div class="desglose-nombre">
+                <span class="categoria-label">{{ etiquetasCategoria[prov.categoria] }}</span>
+                <strong>{{ prov.nombre }}</strong>
+              </div>
+              <span class="desglose-precio">{{ prov.precio | number:'1.2-2' }} €</span>
+            </div>
+          }
+          <div class="desglose-total">
+            <span>Total proveedores</span>
+            <strong>{{ totalProveedores | number:'1.2-2' }} €</strong>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Info presupuesto orientativo -->
+    <div class="info-card">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>El presupuesto estimado es orientativo y puede variar en función de detalles adicionales, temporada y disponibilidad. El presupuesto definitivo se cerrará tras la reunión con el equipo.</p>
+    </div>
+  }
+</div>

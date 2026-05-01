@@ -1,0 +1,23 @@
+<section id="inicio" class="hero">
+  <!-- Imagen de fondo con overlay oscuro -->
+  <div class="hero-fondo"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- Contenido centrado -->
+  <div class="hero-contenido contenedor">
+    <span class="ojo">— Wedding Planner —</span>
+    <h1 class="hero-titulo">Hacemos realidad la boda<br>de tus sueños</h1>
+    <p class="hero-subtitulo">
+      Planificación integral, atención al detalle y coordinación impecable
+      el día más importante de vuestra vida.
+    </p>
+    <a href="#paquetes" class="boton-primario hero-cta" (click)="scrollAPaquetes($event)">
+      Descubre nuestros paquetes
+    </a>
+  </div>
+
+  <!-- Indicador de scroll abajo -->
+  <a href="#paquetes" class="scroll-indicador" (click)="scrollAPaquetes($event)" aria-label="Ir a paquetes">
+    <span></span>
+  </a>
+</section>

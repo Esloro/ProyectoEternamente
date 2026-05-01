@@ -1,0 +1,222 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--altura-navbar);
+  z-index: 1000;
+  background: transparent;
+  transition:
+    background-color var(--transicion-media),
+    box-shadow var(--transicion-media),
+    backdrop-filter var(--transicion-media);
+}
+
+/* Sobre el hero: fondo transparente, texto blanco con sombra para legibilidad */
+.navbar:not(.scrolleado) .logo {
+  color: var(--color-blanco);
+}
+
+.navbar:not(.scrolleado) .logo-marca-acento {
+  color: var(--color-dorado);
+}
+
+.navbar:not(.scrolleado) .enlaces a {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+.navbar:not(.scrolleado) .enlace-login {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.navbar:not(.scrolleado) .hamburguesa span {
+  background: var(--color-blanco);
+}
+
+/* Con scroll: fondo semitransparente, texto oscuro */
+.navbar.scrolleado {
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--sombra-suave);
+}
+
+.navbar.scrolleado .logo {
+  color: var(--color-texto);
+}
+
+.navbar.scrolleado .enlaces a {
+  color: var(--color-texto);
+  text-shadow: none;
+}
+
+.navbar.scrolleado .enlace-login {
+  color: var(--color-texto);
+  text-shadow: none;
+}
+
+.navbar.scrolleado .hamburguesa span {
+  background: var(--color-texto);
+}
+
+.navbar-interior {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-sm);
+}
+
+.logo {
+  font-family: var(--fuente-titulo);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color var(--transicion-media);
+}
+
+.logo-marca-acento {
+  color: var(--color-dorado);
+  margin-left: 0.25rem;
+}
+
+/* Contenedor unificado (dropdown en movil) */
+.menu-movil {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-md);
+}
+
+.enlaces {
+  display: flex;
+  list-style: none;
+  gap: var(--espacio-md);
+  margin: 0;
+  padding: 0;
+}
+
+.enlaces a {
+  font-size: 0.95rem;
+  font-weight: 400;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color var(--transicion-rapida);
+}
+
+.enlaces a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-dorado);
+  transition: width var(--transicion-rapida), left var(--transicion-rapida);
+}
+
+.enlaces a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-sm);
+}
+
+.enlace-login {
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color var(--transicion-rapida);
+}
+
+.enlace-login:hover {
+  color: var(--color-dorado);
+}
+
+.saludo {
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+/* Boton hamburguesa solo visible en movil */
+.hamburguesa {
+  display: none;
+  width: 32px;
+  height: 32px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburguesa span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  transition: background var(--transicion-rapida), transform var(--transicion-rapida), opacity var(--transicion-rapida);
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 900px) {
+  .hamburguesa {
+    display: flex;
+  }
+
+  /* El dropdown unificado: un solo panel con enlaces y acciones apilados */
+  .menu-movil {
+    position: fixed;
+    top: var(--altura-navbar);
+    left: 0;
+    right: 0;
+    background: var(--color-blanco-roto);
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--espacio-sm) var(--espacio-sm) var(--espacio-md);
+    gap: 0;
+    transform: translateY(-150%);
+    transition: transform var(--transicion-media);
+    box-shadow: var(--sombra-media);
+    z-index: 999;
+  }
+
+  .navbar.menu-abierto .menu-movil {
+    transform: translateY(0);
+  }
+
+  .navbar.menu-abierto {
+    background: var(--color-blanco-roto);
+    box-shadow: var(--sombra-suave);
+  }
+
+  /* Dentro del menú móvil: texto siempre oscuro (fondo blanco) */
+  .menu-movil .enlaces a,
+  .menu-movil .enlace-login {
+    color: var(--color-texto) !important;
+    text-shadow: none !important;
+  }
+
+  .enlaces {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--espacio-xs);
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--espacio-xs);
+    padding-top: var(--espacio-sm);
+    border-top: 1px solid var(--color-beige-medio);
+    margin-top: var(--espacio-sm);
+  }
+}

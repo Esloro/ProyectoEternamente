@@ -1,0 +1,37 @@
+# ---- Frontend (Angular) ----
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+frontend/.env
+frontend/.env.*
+
+# ---- Backend (Laravel) ----
+backend/vendor/
+backend/node_modules/
+backend/.env
+backend/.env.backup
+backend/.phpunit.result.cache
+backend/storage/*.key
+backend/storage/logs/*.log
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/testing/*
+backend/storage/framework/views/*
+backend/storage/app/public/*
+backend/bootstrap/cache/*.php
+backend/public/storage
+
+# ---- Docker / sistema ----
+.env
+*.log
+
+# ---- Editores ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- Sistema operativo ----
+Thumbs.db
+.DS_Store

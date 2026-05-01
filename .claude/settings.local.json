@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker --version)",
+      "Bash(docker compose *)",
+      "Bash(php --version)",
+      "Bash(docker pull *)",
+      "PowerShell(Test-NetConnection *)",
+      "Bash(curl -s http://localhost:8025/api/v2/messages)",
+      "Bash(curl -sI http://localhost:8000/api/paquetes)",
+      "Bash(curl -sI http://localhost:8025)",
+      "Bash(curl -sI http://localhost:8080)",
+      "Bash(curl -s -X POST http://localhost:8000/api/contacto -H \"Content-Type: application/json\" -d '{\"nombre\":\"Test 3\",\"email\":\"test3@example.com\",\"mensaje\":\"Tercer intento tras clear caches\"}')",
+      "Bash(curl -s -X POST http://localhost:8000/api/contacto -H \"Content-Type: application/json\" -d '{\"nombre\":\"Test 4\",\"email\":\"test4@example.com\",\"mensaje\":\"Cuarto intento, ahora con markdown:\"}')",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code} en %{time_total}s\\\\n\" http://localhost:8000/api/paquetes)",
+      "Bash(curl -s http://localhost:4200/main.js)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} en %{time_total}s\\\\n\" http://localhost:4200/)",
+      "Bash(npm run *)",
+      "Bash(docker info *)",
+      "Bash(curl -s http://localhost:8000/api/paquetes)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s http://localhost:8000/api/testimonios)",
+      "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\" http://localhost:8000/api/paquetes)",
+      "Bash(curl -s -X POST http://localhost:8000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"admin@weddingplanner.com\",\"password\":\"admin1234\"}' -w '\\\\nHTTP_STATUS:%{http_code}')",
+      "Bash(curl -s -X POST http://localhost:8000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"admin@weddingplanner.com\",\"password\":\"admin1234\"}')",
+      "Bash(curl *)",
+      "Bash(npx ng *)",
+      "Bash(cat)",
+      "Bash(docker cp *)",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(php artisan *)",
+      "Bash(docker exec *)",
+      "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend ls -la /var/www/html/public/)",
+      "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend ls /var/www/html/public/storage/bodas/)",
+      "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend *)"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+:host { display: block; }
+.admin-pagina { max-width: 1100px; margin: 0 auto; }
+
+.pagina-cabecera {
+  margin-bottom: 1.5rem;
+  h1 { font-size: clamp(1.4rem, 3.5vw, 2rem); margin-bottom: 0.25rem; }
+  p { color: var(--color-texto-secundario); margin: 0; }
+}
+
+.filtros-barra { margin-bottom: 1.5rem; }
+
+.buscador {
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--color-beige-medio);
+  border-radius: var(--radio-pequeno);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.9rem;
+  min-width: 280px;
+  background: var(--color-blanco);
+
+  &:focus { outline: none; border-color: var(--color-dorado); }
+}
+
+.cargando-contenedor { display: flex; justify-content: center; padding: 4rem; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--color-beige-medio);
+  border-top-color: var(--color-dorado);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+
+.vacio {
+  text-align: center; padding: 3rem;
+  color: var(--color-texto-secundario);
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+}
+
+.tabla-card {
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-suave);
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-fondo);
+    font-size: 0.9rem;
+  }
+
+  th {
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--color-texto-secundario);
+    background: var(--color-fondo);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(201,169,97,0.04); }
+  .id-col { color: var(--color-texto-secundario); font-size: 0.8rem; }
+}
+
+.badge-si {
+  display: inline-block; padding: 0.2rem 0.6rem;
+  background: #D4EDDA; color: #155724;
+  border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+}
+
+.badge-no {
+  display: inline-block; padding: 0.2rem 0.6rem;
+  background: #FFF3CD; color: #856404;
+  border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+}
+
+.btn-verificar {
+  padding: 0.2rem 0.6rem;
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: #ffe69c; }
+}

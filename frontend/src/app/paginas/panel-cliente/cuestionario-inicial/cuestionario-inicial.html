@@ -1,0 +1,180 @@
+<div class="cuestionario-pagina">
+  <div class="cuestionario-cabecera">
+    <h1>Cuéntanos sobre tu boda</h1>
+    <p>Completa este formulario para que podamos diseñar juntos el día perfecto.</p>
+
+    <!-- Indicador de pasos -->
+    <div class="pasos-indicador">
+      @for (paso of [1,2,3,4]; track paso) {
+        <div class="paso-item" [class.activo]="pasoActual() === paso" [class.completado]="pasoActual() > paso">
+          <div class="paso-circulo">{{ paso }}</div>
+          <span class="paso-etiqueta">
+            @switch (paso) {
+              @case (1) { Ceremonia }
+              @case (2) { Invitados }
+              @case (3) { Estilo }
+              @case (4) { Presupuesto }
+            }
+          </span>
+        </div>
+        @if (paso < 4) {
+          <div class="paso-linea" [class.completada]="pasoActual() > paso"></div>
+        }
+      }
+    </div>
+  </div>
+
+  <form [formGroup]="form" class="cuestionario-form">
+
+    <!-- PASO 1: Ceremonia -->
+    @if (pasoActual() === 1) {
+      <div class="paso-contenido">
+        <h2 class="paso-titulo">¿Cómo será la ceremonia?</h2>
+
+        <div class="campo">
+          <label>Tipo de ceremonia</label>
+          <div class="opciones-grid">
+            @for (op of tiposCeremonia; track op.valor) {
+              <label class="opcion-tarjeta" [class.seleccionada]="form.get('tipo_ceremonia')?.value === op.valor">
+                <input type="radio" formControlName="tipo_ceremonia" [value]="op.valor" hidden>
+                {{ op.etiqueta }}
+              </label>
+            }
+          </div>
+        </div>
+
+        @if (iglesiaNecesaria) {
+          <div class="campo">
+            <label for="iglesia">Nombre o dirección de la iglesia</label>
+            <input id="iglesia" type="text" formControlName="iglesia" placeholder="Ej: Iglesia de San Marcos, Madrid">
+          </div>
+        }
+
+        <div class="campo">
+          <label for="fecha_boda">Fecha de la boda</label>
+          <input id="fecha_boda" type="date" formControlName="fecha_boda"
+            [min]="'2025-01-01'"
+            [class.invalido]="form.get('fecha_boda')?.invalid && form.get('fecha_boda')?.touched">
+          @if (form.get('fecha_boda')?.invalid && form.get('fecha_boda')?.touched) {
+            <span class="error-campo">Selecciona una fecha válida</span>
+          }
+        </div>
+
+        <div class="campo">
+          <label>Franja horaria</label>
+          <div class="opciones-lista">
+            @for (f of franjas; track f.valor) {
+              <label class="opcion-radio" [class.seleccionada]="form.get('franja_horaria')?.value === f.valor">
+                <input type="radio" formControlName="franja_horaria" [value]="f.valor">
+                {{ f.etiqueta }}
+              </label>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- PASO 2: Invitados -->
+    @if (pasoActual() === 2) {
+      <div class="paso-contenido">
+        <h2 class="paso-titulo">¿Cuántos invitados os acompañarán?</h2>
+
+        <div class="campo campo-invitados">
+          <label for="num_invitados">Número de invitados estimado</label>
+          <div class="contador-invitados">
+            <button type="button" class="btn-contador" (click)="form.get('num_invitados')?.setValue(Math.max(1, (form.get('num_invitados')?.value || 1) - 10))">−10</button>
+            <input
+              id="num_invitados"
+              type="number"
+              formControlName="num_invitados"
+              min="1"
+              max="2000"
+              [class.invalido]="form.get('num_invitados')?.invalid && form.get('num_invitados')?.touched"
+            >
+            <button type="button" class="btn-contador" (click)="form.get('num_invitados')?.setValue(Math.min(2000, (form.get('num_invitados')?.value || 0) + 10))">+10</button>
+          </div>
+          @if (form.get('num_invitados')?.invalid && form.get('num_invitados')?.touched) {
+            <span class="error-campo">Introduce un número entre 1 y 2000</span>
+          }
+        </div>
+
+        <div class="info-invitados">
+          <p>El número de invitados influye en el presupuesto y en la elección del lugar de celebración. Podéis modificarlo más adelante.</p>
+        </div>
+      </div>
+    }
+
+    <!-- PASO 3: Estilo -->
+    @if (pasoActual() === 3) {
+      <div class="paso-contenido">
+        <h2 class="paso-titulo">¿Qué estilo imagináis para vuestra boda?</h2>
+
+        <div class="campo">
+          <label>Temática</label>
+          <div class="opciones-grid tematicas">
+            @for (t of tematicas; track t.valor) {
+              <label class="opcion-tarjeta grande" [class.seleccionada]="form.get('tematica')?.value === t.valor">
+                <input type="radio" formControlName="tematica" [value]="t.valor" hidden>
+                <span class="emoji">{{ t.emoji }}</span>
+                <span class="nombre">{{ t.etiqueta }}</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <div class="campo">
+          <label>Tipo de comida</label>
+          <div class="opciones-lista">
+            @for (c of tiposComida; track c.valor) {
+              <label class="opcion-radio con-desc" [class.seleccionada]="form.get('tipo_comida')?.value === c.valor">
+                <input type="radio" formControlName="tipo_comida" [value]="c.valor">
+                <div>
+                  <strong>{{ c.etiqueta }}</strong>
+                  <span>{{ c.desc }}</span>
+                </div>
+              </label>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- PASO 4: Presupuesto -->
+    @if (pasoActual() === 4) {
+      <div class="paso-contenido">
+        <h2 class="paso-titulo">¿Cuál es vuestro presupuesto orientativo?</h2>
+        <p class="paso-desc">Esto nos ayuda a recomendaros los mejores proveedores para vuestro presupuesto.</p>
+
+        <div class="opciones-presupuesto">
+          @for (p of presupuestos; track p.valor) {
+            <label class="opcion-presupuesto" [class.seleccionada]="form.get('presupuesto_orientativo')?.value === p.valor">
+              <input type="radio" formControlName="presupuesto_orientativo" [value]="p.valor" hidden>
+              {{ p.etiqueta }}
+            </label>
+          }
+        </div>
+
+        @if (error()) {
+          <div class="auth-alerta error">{{ error() }}</div>
+        }
+      </div>
+    }
+
+    <!-- Acciones -->
+    <div class="paso-acciones">
+      @if (pasoActual() > 1) {
+        <button type="button" class="boton-secundario" (click)="anteriorPaso()">← Anterior</button>
+      } @else {
+        <span></span>
+      }
+
+      @if (pasoActual() < totalPasos) {
+        <button type="button" class="boton-primario" (click)="siguientePaso()">Siguiente →</button>
+      } @else {
+        <button type="submit" class="boton-primario" [disabled]="form.invalid || enviando()" (click)="enviar()">
+          {{ enviando() ? 'Enviando…' : 'Finalizar cuestionario' }}
+        </button>
+      }
+    </div>
+  </form>
+</div>

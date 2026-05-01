@@ -1,0 +1,39 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Chat</h1>
+    <p>Conversaciones con los clientes activos.</p>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+    @if (conversaciones().length === 0) {
+      <div class="vacio">No hay conversaciones activas.</div>
+    } @else {
+      <div class="conversaciones-lista">
+        @for (conv of conversaciones(); track conv.boda.id) {
+          <a [routerLink]="'/admin/chat/' + conv.boda.id" class="conv-card">
+            <div class="conv-avatar">
+              {{ conv.cliente.nombre.charAt(0).toUpperCase() }}
+            </div>
+            <div class="conv-info">
+              <div class="conv-cabecera">
+                <strong>{{ conv.cliente.nombre }} {{ conv.cliente.apellidos }}</strong>
+                <span class="conv-fecha">{{ conv.ultimo?.created_at | date:'dd/MM HH:mm' }}</span>
+              </div>
+              <span class="conv-email">{{ conv.cliente.email }}</span>
+              @if (conv.ultimo) {
+                <p class="conv-preview">{{ conv.ultimo.contenido }}</p>
+              }
+            </div>
+            @if (conv.no_leidos > 0) {
+              <span class="conv-no-leidos">{{ conv.no_leidos }}</span>
+            }
+          </a>
+        }
+      </div>
+    }
+  }
+</div>

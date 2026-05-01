@@ -1,0 +1,94 @@
+<div class="personalizacion-pagina">
+  <div class="pagina-cabecera">
+    <h1>Selección de proveedores</h1>
+    <p>Elige un proveedor por categoría. Podéis cambiar la selección en cualquier momento.</p>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor">
+      <div class="spinner"></div>
+      <p>Cargando proveedores…</p>
+    </div>
+  }
+
+  @if (!cargando()) {
+    <div class="personalizacion-layout">
+
+      <!-- Panel izquierdo: categorías -->
+      <aside class="categorias-lista">
+        @for (cat of categorias(); track cat.categoria) {
+          <button
+            class="categoria-btn"
+            [class.activa]="categoriaActiva() === cat.categoria"
+            [class.con-seleccion]="tieneSeleccionEnCategoria(cat)"
+            (click)="categoriaActiva.set(cat.categoria)"
+          >
+            <span class="cat-nombre">{{ etiquetasCategoria[cat.categoria] }}</span>
+            @if (tieneSeleccionEnCategoria(cat)) {
+              <span class="cat-check">✓</span>
+            }
+          </button>
+        }
+      </aside>
+
+      <!-- Panel derecho: proveedores de la categoría activa -->
+      <div class="proveedores-panel">
+        @if (categoriaActivaData) {
+          <h2>{{ etiquetasCategoria[categoriaActivaData.categoria] }}</h2>
+          <p class="cat-desc">Selecciona uno de los siguientes proveedores para esta categoría.</p>
+
+          @if (categoriaActivaData.proveedores.length === 0) {
+            <div class="sin-proveedores">No hay proveedores disponibles en esta categoría.</div>
+          }
+
+          <div class="proveedores-grid">
+            @for (prov of categoriaActivaData.proveedores; track prov.id) {
+              <div
+                class="proveedor-card"
+                [class.seleccionado]="estaSeleccionado(prov.id)"
+                (click)="toggleProveedor(prov)"
+              >
+                @if (prov.foto) {
+                  <img [src]="prov.foto" [alt]="prov.nombre" class="proveedor-foto">
+                } @else {
+                  <div class="proveedor-foto-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                }
+
+                <div class="proveedor-info">
+                  <h3>{{ prov.nombre }}</h3>
+                  @if (prov.descripcion) {
+                    <p>{{ prov.descripcion }}</p>
+                  }
+                  <span class="proveedor-precio">Desde {{ prov.precio | number:'1.0-0' }} €</span>
+                </div>
+
+                <div class="seleccion-check">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Barra de acciones -->
+    <div class="acciones-barra">
+      <span class="seleccion-resumen">{{ seleccionados().size }} proveedor(es) seleccionado(s) de {{ categorias().length }} categorías</span>
+
+      <div class="acciones-grupo">
+        @if (exito()) {
+          <span class="alerta-exito">{{ exito() }}</span>
+        }
+        @if (error()) {
+          <span class="alerta-error">{{ error() }}</span>
+        }
+        <button class="boton-primario" [disabled]="guardando()" (click)="guardar()">
+          {{ guardando() ? 'Guardando…' : 'Guardar selección' }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

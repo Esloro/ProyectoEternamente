@@ -1,0 +1,157 @@
+<div class="panel-layout" [class.menu-abierto]="menuMovilAbierto()">
+
+  <!-- Overlay para cerrar el menú móvil -->
+  @if (menuMovilAbierto()) {
+    <div class="panel-overlay" (click)="cerrarMenuMovil()"></div>
+  }
+
+  <!-- Sidebar -->
+  <aside class="panel-sidebar">
+    <div class="sidebar-cabecera">
+      <a routerLink="/" class="sidebar-logo">Wedding<span>Planner</span></a>
+    </div>
+
+    <!-- Info usuario -->
+    <div class="sidebar-usuario">
+      <div class="sidebar-usuario-avatar">
+        {{ auth.usuario()?.nombre?.charAt(0)?.toUpperCase() }}
+      </div>
+      <div class="sidebar-usuario-info">
+        <span class="nombre">{{ auth.usuario()?.nombre }}</span>
+        @if (etiquetaEstado()) {
+          <span class="etiqueta-estado {{ boda()?.estado }}">{{ etiquetaEstado() }}</span>
+        } @else {
+          <span class="sin-boda">Sin boda activa</span>
+        }
+      </div>
+    </div>
+
+    <!-- Cuenta atrás -->
+    @if (cuentaAtras() !== null && boda()?.estado === 'activa') {
+      <div class="sidebar-cuenta-atras">
+        <span class="dias">{{ cuentaAtras() }}</span>
+        <span class="etiqueta">días para la boda</span>
+      </div>
+    }
+
+    <!-- Navegación -->
+    <nav class="sidebar-nav">
+      <a
+        routerLink="/panel/resumen"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Resumen
+      </a>
+
+      <a
+        routerLink="/panel/personalizacion"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+        [class.deshabilitado]="!bodaActiva()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Proveedores
+        @if (!bodaActiva()) {
+          <svg class="icono-candado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        }
+      </a>
+
+      <a
+        routerLink="/panel/mesas"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+        [class.deshabilitado]="!bodaActiva()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/><line x1="2" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="22" y2="12"/></svg>
+        Mesas
+        @if (!bodaActiva()) {
+          <svg class="icono-candado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        }
+      </a>
+
+      <a
+        routerLink="/panel/presupuesto"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+        [class.deshabilitado]="!bodaActiva()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Presupuesto
+        @if (!bodaActiva()) {
+          <svg class="icono-candado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        }
+      </a>
+
+      <a
+        routerLink="/panel/chat"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+        [class.deshabilitado]="!bodaActiva()"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+        @if (!bodaActiva()) {
+          <svg class="icono-candado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        }
+      </a>
+
+      <a
+        routerLink="/panel/perfil"
+        routerLinkActive="activo"
+        (click)="cerrarMenuMovil()"
+        class="nav-enlace"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Mi perfil
+      </a>
+    </nav>
+
+    <!-- Pie del sidebar -->
+    <div class="sidebar-pie">
+      <a routerLink="/" class="nav-enlace volver-landing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Inicio
+      </a>
+      <button class="nav-enlace cerrar-sesion" (click)="cerrarSesion()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="panel-contenido">
+    <!-- Cabecera móvil -->
+    <header class="panel-header-movil">
+      <button class="boton-menu-movil" (click)="toggleMenuMovil()" aria-label="Menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="panel-header-logo">Wedding<span>Planner</span></span>
+    </header>
+
+    @if (emailSinVerificar()) {
+      <div class="banner-verificacion">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3z"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span>
+          @if (reenvioEnviado()) {
+            Email de verificación enviado. Revisa tu bandeja de entrada.
+          } @else {
+            Verifica tu email para acceder a todas las funciones.
+            <button (click)="reenviarVerificacion()">Reenviar email</button>
+          }
+        </span>
+      </div>
+    }
+
+    <div class="panel-contenido-inner">
+      <router-outlet />
+    </div>
+  </main>
+</div>

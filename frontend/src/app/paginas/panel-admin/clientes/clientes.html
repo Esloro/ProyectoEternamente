@@ -1,0 +1,55 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Clientes</h1>
+    <p>Lista de todos los usuarios registrados.</p>
+  </div>
+
+  <div class="filtros-barra">
+    <input type="search" class="buscador" placeholder="Buscar por nombre o email…" (input)="onBusqueda($event)">
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+    @if (clientes().length === 0) {
+      <div class="vacio">No hay clientes registrados.</div>
+    } @else {
+      <div class="tabla-card">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Email verificado</th>
+              <th>Registro</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of clientes(); track c.id) {
+              <tr>
+                <td class="id-col">{{ c.id }}</td>
+                <td><strong>{{ c.nombre }} {{ c.apellidos }}</strong></td>
+                <td>{{ c.email }}</td>
+                <td>{{ c.telefono ?? '—' }}</td>
+                <td>
+                  @if (c.email_verificado_en) {
+                    <span class="badge-si">Verificado</span>
+                  } @else {
+                    <button class="btn-verificar" (click)="verificarEmail(c)" title="Verificar email manualmente">
+                      Verificar
+                    </button>
+                  }
+                </td>
+                <td>{{ c.created_at | date:'dd/MM/yyyy' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+</div>

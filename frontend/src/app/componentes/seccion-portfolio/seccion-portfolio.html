@@ -1,0 +1,44 @@
+<section id="portfolio" class="seccion portfolio" appScrollReveal>
+  <div class="contenedor">
+
+    <header class="seccion-titulo">
+      <span class="subtitulo">Algunas de nuestras bodas</span>
+      <h2><span class="lineas-decorativas"></span> Portfolio <span class="lineas-decorativas"></span></h2>
+    </header>
+
+    @if (cargando()) {
+      <p class="estado">Cargando portfolio...</p>
+    } @else {
+      <div class="grid-portfolio">
+        @for (entrada of entradas(); track entrada.id) {
+          <article class="item" (click)="abrirModal(entrada)">
+            <img [src]="entrada.foto" [alt]="entrada.titulo" loading="lazy">
+            <div class="overlay">
+              <h3>{{ entrada.titulo }}</h3>
+              @if (entrada.descripcion) {
+                <p>{{ entrada.descripcion }}</p>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    }
+
+  </div>
+
+  <!-- Modal -->
+  @if (entradaActiva(); as entrada) {
+    <div class="modal-fondo" (click)="cerrarModal()">
+      <button class="cerrar" (click)="cerrarModal()" aria-label="Cerrar">×</button>
+      <div class="modal-contenido" (click)="$event.stopPropagation()">
+        <img [src]="entrada.foto" [alt]="entrada.titulo">
+        <div class="modal-texto">
+          <h3>{{ entrada.titulo }}</h3>
+          @if (entrada.descripcion) {
+            <p>{{ entrada.descripcion }}</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

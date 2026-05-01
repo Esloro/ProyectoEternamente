@@ -1,0 +1,82 @@
+<section id="contacto" class="seccion contacto" appScrollReveal>
+  <div class="contenedor">
+
+    <header class="seccion-titulo">
+      <span class="subtitulo">Hablemos</span>
+      <h2><span class="lineas-decorativas"></span> Contacto <span class="lineas-decorativas"></span></h2>
+    </header>
+
+    <div class="grid">
+
+      <!-- Columna izquierda: datos + mapa -->
+      <aside class="datos-contacto">
+        <h3>¿Empezamos a planificar vuestra boda?</h3>
+        <p>Cuéntanos vuestra idea y nos pondremos en contacto contigo en menos de 48 horas.</p>
+
+        <ul class="info">
+          <li><strong>Dirección:</strong> Calle Gran Vía 28, 28013 Madrid</li>
+          <li><strong>Teléfono:</strong> +34 911 234 567</li>
+          <li><strong>Email:</strong> hola&#64;weddingplanner.com</li>
+          <li><strong>Horario:</strong> Lunes a viernes, 10:00-19:00</li>
+        </ul>
+
+        <div class="mapa">
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-3.7077%2C40.4167%2C-3.7027%2C40.4197&layer=mapnik&marker=40.4182%2C-3.7052"
+            title="Ubicación de Wedding Planner en Madrid"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </aside>
+
+      <!-- Columna derecha: formulario -->
+      <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+
+        <div class="campo">
+          <label for="nombre">Nombre *</label>
+          <input id="nombre" type="text" formControlName="nombre" [class.invalido]="campoInvalido('nombre')">
+          @if (campoInvalido('nombre')) {
+            <small class="error-campo">Indícanos tu nombre.</small>
+          }
+        </div>
+
+        <div class="fila">
+          <div class="campo">
+            <label for="email">Email *</label>
+            <input id="email" type="email" formControlName="email" [class.invalido]="campoInvalido('email')">
+            @if (campoInvalido('email')) {
+              <small class="error-campo">Email no válido.</small>
+            }
+          </div>
+
+          <div class="campo">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="tel" formControlName="telefono">
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="mensaje">Mensaje *</label>
+          <textarea id="mensaje" rows="5" formControlName="mensaje" [class.invalido]="campoInvalido('mensaje')"
+            placeholder="Cuéntanos sobre vuestra boda: fecha aproximada, tipo de ceremonia, número de invitados..."></textarea>
+          @if (campoInvalido('mensaje')) {
+            <small class="error-campo">El mensaje debe tener al menos 10 caracteres.</small>
+          }
+        </div>
+
+        <button type="submit" class="boton-primario" [disabled]="estado() === 'enviando'">
+          @if (estado() === 'enviando') { Enviando... } @else { Enviar mensaje }
+        </button>
+
+        @if (estado() === 'exito') {
+          <p class="alerta exito">¡Mensaje recibido! Te contestaremos lo antes posible.</p>
+        } @else if (estado() === 'error') {
+          <p class="alerta error">{{ mensajeError() }}</p>
+        }
+
+      </form>
+
+    </div>
+  </div>
+</section>

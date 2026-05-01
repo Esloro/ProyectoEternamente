@@ -1,0 +1,38 @@
+<nav class="navbar" [class.scrolleado]="scrolleado()" [class.menu-abierto]="menuAbierto()">
+  <div class="contenedor navbar-interior">
+
+    <!-- Logo -->
+    <a class="logo" routerLink="/" (click)="cerrarMenuMovil()">
+      <span class="logo-marca">Wedding</span>
+      <span class="logo-marca-acento">Planner</span>
+    </a>
+
+    <!-- Boton hamburguesa (movil) -->
+    <button class="hamburguesa" (click)="alternarMenu()" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Contenedor unificado (dropdown en movil) -->
+    <div class="menu-movil">
+      <ul class="enlaces">
+        @for (enlace of enlaces; track enlace.ancla) {
+          <li>
+            <a [href]="'/#' + enlace.ancla" (click)="cerrarMenuMovil()">{{ enlace.texto }}</a>
+          </li>
+        }
+      </ul>
+
+      <div class="acciones">
+        @if (!estaLogueado()) {
+          <a routerLink="/login" class="enlace-login" (click)="cerrarMenuMovil()">Iniciar sesión</a>
+          <a routerLink="/registro" class="boton-primario" (click)="cerrarMenuMovil()">Registrarse</a>
+        } @else {
+          <span class="saludo">Hola, {{ nombreUsuario() }}</span>
+          <button class="boton-secundario" (click)="irAPanel()">Mi panel</button>
+          <button class="enlace-login" (click)="cerrarSesion()">Cerrar sesión</button>
+        }
+      </div>
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,122 @@
+.sobre-nosotros {
+  background: var(--color-blanco-roto);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-lg);
+  align-items: center;
+}
+
+.imagen {
+  position: relative;
+}
+
+.imagen img {
+  width: 100%;
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-media);
+}
+
+.anos-experiencia {
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  background: var(--color-dorado);
+  color: var(--color-blanco);
+  padding: var(--espacio-md);
+  border-radius: var(--radio-medio);
+  text-align: center;
+  box-shadow: var(--sombra-fuerte);
+}
+
+.anos-experiencia .numero {
+  display: block;
+  font-family: var(--fuente-titulo);
+  font-size: 3.5rem;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.anos-experiencia .texto {
+  display: block;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
+}
+
+.texto .subtitulo {
+  display: block;
+  color: var(--color-dorado);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--espacio-xs);
+}
+
+.texto h2 {
+  margin-bottom: var(--espacio-md);
+}
+
+.texto p {
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-sm);
+}
+
+.valores {
+  display: flex;
+  gap: var(--espacio-md);
+  margin-top: var(--espacio-md);
+  padding-top: var(--espacio-md);
+  border-top: 1px solid var(--color-beige-medio);
+}
+
+.valor {
+  text-align: center;
+  flex: 1;
+}
+
+.valor strong {
+  display: block;
+  font-family: var(--fuente-titulo);
+  font-size: 1.8rem;
+  color: var(--color-dorado);
+  margin-bottom: 0.25rem;
+}
+
+.valor span {
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-md);
+  }
+
+  /* En columna unica el badge quedaría fuera de pantalla; lo metemos dentro y
+     añadimos margen inferior para que no tape el texto que viene debajo */
+  .imagen {
+    margin-bottom: 1.5rem;
+  }
+
+  .anos-experiencia {
+    bottom: -1.5rem;
+    right: 1rem;
+    padding: var(--espacio-sm);
+  }
+
+  .anos-experiencia .numero {
+    font-size: 2.5rem;
+  }
+
+  .valores {
+    flex-direction: column;
+    gap: var(--espacio-sm);
+  }
+}

@@ -1,0 +1,117 @@
+.testimonios {
+  background: var(--color-fondo);
+}
+
+.carrusel {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.pista {
+  display: flex;
+  transition: transform var(--transicion-lenta);
+}
+
+.testimonio {
+  flex: 0 0 100%;
+  text-align: center;
+  padding: var(--espacio-md) 3.5rem; /* margen lateral para que el texto no tape las flechas */
+}
+
+.testimonio .foto {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto var(--espacio-sm);
+  border: 3px solid var(--color-dorado);
+}
+
+.testimonio .estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+  color: var(--color-dorado);
+  margin-bottom: var(--espacio-sm);
+}
+
+.testimonio .estrellas .vacia {
+  color: var(--color-beige-medio);
+}
+
+.testimonio .comentario {
+  font-family: var(--fuente-titulo);
+  font-style: italic;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--color-texto);
+  margin-bottom: var(--espacio-sm);
+  position: relative;
+}
+
+.testimonio .nombre {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-dorado);
+  font-size: 0.9rem;
+}
+
+.flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  box-shadow: var(--sombra-suave);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background var(--transicion-rapida), color var(--transicion-rapida);
+}
+
+.flecha:hover {
+  background: var(--color-dorado);
+  color: var(--color-blanco);
+}
+
+.flecha.izquierda { left: 0; }
+.flecha.derecha { right: 0; }
+
+.indicadores {
+  display: flex;
+  justify-content: center;
+  gap: var(--espacio-xs);
+  margin-top: var(--espacio-sm);
+}
+
+.indicadores button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-beige-medio);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transicion-rapida);
+}
+
+.indicadores button.activo {
+  background: var(--color-dorado);
+  width: 24px;
+  border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+  .flecha.izquierda { left: 0; }
+  .flecha.derecha { right: 0; }
+
+  .testimonio {
+    padding: var(--espacio-md) 3rem;
+  }
+}

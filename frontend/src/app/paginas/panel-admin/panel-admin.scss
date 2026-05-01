@@ -1,0 +1,212 @@
+/* Reusa los mismos estilos que panel-cliente pero con colores de admin */
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.panel-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.panel-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+
+/* Sidebar */
+.panel-sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #2C2C2C;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+}
+
+.sidebar-cabecera {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-logo {
+  font-family: var(--fuente-titulo);
+  font-size: 1.3rem;
+  color: var(--color-blanco);
+  text-decoration: none;
+  span { color: var(--color-dorado); margin-left: 0.2rem; }
+}
+
+.admin-badge {
+  background: var(--color-dorado);
+  color: var(--color-blanco);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-usuario {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-usuario-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-dorado);
+  color: var(--color-blanco);
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar-usuario-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  .nombre { font-size: 0.9rem; font-weight: 600; color: var(--color-blanco); }
+  .rol { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-grupo-titulo {
+  padding: 0.75rem 1.5rem 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+}
+
+.nav-enlace {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.87rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  background: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--fuente-cuerpo);
+  transition: background var(--transicion-rapida), color var(--transicion-rapida);
+
+  svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+  &:hover { background: rgba(255,255,255,0.07); color: var(--color-blanco); }
+
+  &.activo {
+    background: rgba(201,169,97,0.15);
+    color: var(--color-dorado);
+    border-left-color: var(--color-dorado);
+    font-weight: 600;
+  }
+}
+
+.sidebar-pie {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+
+  .volver-landing { font-size: 0.82rem; }
+  .cerrar-sesion { font-size: 0.82rem; color: rgba(255,100,100,0.8); }
+  .cerrar-sesion:hover { background: rgba(255,50,50,0.1); color: #FF6B6B; }
+}
+
+/* Contenido */
+.panel-contenido {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-fondo);
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header-movil {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: #2C2C2C;
+  color: var(--color-blanco);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .panel-header-logo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.2rem;
+    span { color: var(--color-dorado); }
+    small { font-size: 0.7rem; color: var(--color-dorado); margin-left: 0.4rem; vertical-align: middle; }
+  }
+}
+
+.boton-menu-movil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radio-pequeno);
+  color: var(--color-blanco);
+  transition: background var(--transicion-rapida);
+
+  &:hover { background: rgba(255,255,255,0.1); }
+  svg { width: 22px; height: 22px; }
+}
+
+.panel-contenido-inner {
+  flex: 1;
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  .panel-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    transition: transform var(--transicion-media);
+    box-shadow: var(--sombra-fuerte);
+  }
+
+  .panel-layout.menu-abierto {
+    .panel-sidebar { transform: translateX(0); }
+    .panel-overlay { display: block; }
+  }
+
+  .panel-header-movil { display: flex; }
+  .panel-contenido-inner { padding: 1.5rem 1rem; }
+}

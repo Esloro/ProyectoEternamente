@@ -1,0 +1,191 @@
+<div class="mesas-pagina">
+  <div class="pagina-cabecera">
+    <div>
+      <h1>Organizador de mesas</h1>
+      <p>Arrastra los invitados entre mesas para organizar la distribución del banquete.</p>
+    </div>
+    <div class="cabecera-acciones">
+      <button class="boton-secundario" (click)="abrirModalInvitado()">+ Invitado</button>
+      <button class="boton-primario" (click)="abrirModalMesa()">+ Mesa</button>
+    </div>
+  </div>
+
+  @if (error()) {
+    <div class="auth-alerta error" style="margin-bottom:1rem">{{ error() }}</div>
+  }
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div><p>Cargando…</p></div>
+  }
+
+  @if (!cargando()) {
+    <!-- Stats rápidas -->
+    <div class="stats-fila">
+      <div class="stat-mini">
+        <span class="valor">{{ totalInvitados() }}</span>
+        <span class="etiqueta">Total invitados</span>
+      </div>
+      <div class="stat-mini">
+        <span class="valor">{{ mesas().length }}</span>
+        <span class="etiqueta">Mesas</span>
+      </div>
+      <div class="stat-mini warn" [class.warn]="sinMesa().length > 0">
+        <span class="valor">{{ sinMesa().length }}</span>
+        <span class="etiqueta">Sin mesa asignada</span>
+      </div>
+    </div>
+
+    <!-- Tablero de mesas -->
+    <div class="tablero-layout">
+
+      <!-- Lista de invitados sin mesa -->
+      <div class="sin-mesa-panel">
+        <div class="panel-header">
+          <h3>Sin mesa</h3>
+          <span class="badge">{{ sinMesa().length }}</span>
+        </div>
+        <div
+          class="drop-zone"
+          cdkDropList
+          id="sin-mesa"
+          [cdkDropListData]="sinMesa()"
+          [cdkDropListConnectedTo]="dropListIds"
+          (cdkDropListDropped)="drop($event, null)"
+        >
+          @for (inv of sinMesa(); track inv.id) {
+            <div class="invitado-chip" cdkDrag [cdkDragData]="inv">
+              <span class="inv-nombre">{{ inv.nombre }}</span>
+              @if (inv.acompanante) { <span class="inv-badge">+1</span> }
+              @if (inv.alergias) { <span class="inv-alergia" title="Alergias: {{ inv.alergias }}">⚠</span> }
+              <div class="inv-acciones">
+                <button (click)="abrirModalInvitado(inv)" title="Editar">✏</button>
+                <button (click)="eliminarInvitado(inv.id)" title="Eliminar">✕</button>
+              </div>
+            </div>
+          }
+          @if (sinMesa().length === 0) {
+            <div class="drop-placeholder">Arrastra aquí para quitar de la mesa</div>
+          }
+        </div>
+      </div>
+
+      <!-- Mesas -->
+      <div class="mesas-tablero">
+        @if (mesas().length === 0) {
+          <div class="sin-mesas">
+            <p>Aún no has creado ninguna mesa.</p>
+            <button class="boton-primario" (click)="abrirModalMesa()">Crear primera mesa</button>
+          </div>
+        }
+
+        @for (mesa of mesas(); track mesa.id) {
+          <div class="mesa-card">
+            <div class="mesa-header">
+              <div>
+                <h3>Mesa {{ mesa.numero }}</h3>
+                <span class="mesa-capacidad">{{ mesa.invitadosLista.length }} / {{ mesa.capacidad }}</span>
+              </div>
+              <div class="mesa-acciones">
+                <button (click)="abrirModalMesa(mesa)" title="Editar">✏</button>
+                <button (click)="eliminarMesa(mesa.id)" title="Eliminar">✕</button>
+              </div>
+            </div>
+
+            <!-- Barra de capacidad -->
+            <div class="capacidad-barra">
+              <div
+                class="capacidad-fill"
+                [style.width.%]="Math.min(100, (mesa.invitadosLista.length / mesa.capacidad) * 100)"
+                [class.llena]="mesa.invitadosLista.length >= mesa.capacidad"
+              ></div>
+            </div>
+
+            <div
+              class="drop-zone"
+              cdkDropList
+              [id]="'mesa-' + mesa.id"
+              [cdkDropListData]="mesa.invitadosLista"
+              [cdkDropListConnectedTo]="dropListIds"
+              (cdkDropListDropped)="drop($event, mesa.id)"
+            >
+              @for (inv of mesa.invitadosLista; track inv.id) {
+                <div class="invitado-chip" cdkDrag [cdkDragData]="inv">
+                  <span class="inv-nombre">{{ inv.nombre }}</span>
+                  @if (inv.acompanante) { <span class="inv-badge">+1</span> }
+                  @if (inv.alergias) { <span class="inv-alergia" title="Alergias: {{ inv.alergias }}">⚠</span> }
+                  <div class="inv-acciones">
+                    <button (click)="abrirModalInvitado(inv)" title="Editar">✏</button>
+                    <button (click)="eliminarInvitado(inv.id)" title="Eliminar">✕</button>
+                  </div>
+                </div>
+              }
+              @if (mesa.invitadosLista.length === 0) {
+                <div class="drop-placeholder">Arrastra invitados aquí</div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Modal Mesa -->
+@if (modalMesa()) {
+  <div class="modal-overlay" (click)="cerrarModalMesa()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>{{ editandoMesa() ? 'Editar mesa' : 'Nueva mesa' }}</h2>
+      <form [formGroup]="formMesa" class="modal-form">
+        <div class="campo">
+          <label for="mesa-numero">Número de mesa</label>
+          <input id="mesa-numero" type="number" formControlName="numero" min="1">
+        </div>
+        <div class="campo">
+          <label for="mesa-capacidad">Capacidad (personas)</label>
+          <input id="mesa-capacidad" type="number" formControlName="capacidad" min="1" max="100">
+        </div>
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModalMesa()">Cancelar</button>
+          <button type="submit" class="boton-primario" [disabled]="formMesa.invalid || guardando()" (click)="guardarMesa()">
+            {{ guardando() ? 'Guardando…' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Modal Invitado -->
+@if (modalInvitado()) {
+  <div class="modal-overlay" (click)="cerrarModalInvitado()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>{{ editandoInvitado() ? 'Editar invitado' : 'Nuevo invitado' }}</h2>
+      <form [formGroup]="formInvitado" class="modal-form">
+        <div class="campo">
+          <label for="inv-nombre">Nombre</label>
+          <input id="inv-nombre" type="text" formControlName="nombre" placeholder="Nombre del invitado"
+            [class.invalido]="formInvitado.get('nombre')?.invalid && formInvitado.get('nombre')?.touched">
+          @if (formInvitado.get('nombre')?.invalid && formInvitado.get('nombre')?.touched) {
+            <span class="error-campo">El nombre es obligatorio</span>
+          }
+        </div>
+        <div class="campo">
+          <label for="inv-alergias">Alergias o restricciones alimentarias</label>
+          <input id="inv-alergias" type="text" formControlName="alergias" placeholder="Ej: gluten, lactosa…">
+        </div>
+        <div class="campo campo-check">
+          <label>
+            <input type="checkbox" formControlName="acompanante">
+            Viene con acompañante (+1)
+          </label>
+        </div>
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModalInvitado()">Cancelar</button>
+          <button type="submit" class="boton-primario" [disabled]="formInvitado.invalid || guardando()" (click)="guardarInvitado()">
+            {{ guardando() ? 'Guardando…' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

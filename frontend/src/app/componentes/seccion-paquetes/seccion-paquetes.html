@@ -1,0 +1,49 @@
+<section id="paquetes" class="seccion paquetes" appScrollReveal>
+  <div class="contenedor">
+
+    <header class="seccion-titulo">
+      <span class="subtitulo">Nuestros servicios</span>
+      <h2><span class="lineas-decorativas"></span> Paquetes <span class="lineas-decorativas"></span></h2>
+      <p class="descripcion">Elige el nivel de acompañamiento que mejor encaja con vosotros.</p>
+    </header>
+
+    @if (cargando()) {
+      <p class="estado">Cargando paquetes...</p>
+    } @else if (error()) {
+      <p class="estado error">{{ error() }}</p>
+    } @else {
+      <div class="grid-paquetes">
+        @for (paquete of paquetes(); track paquete.id) {
+          <article class="tarjeta-paquete tarjeta" [class.destacado]="paquete.destacado">
+            @if (paquete.destacado) {
+              <span class="badge">Más popular</span>
+            }
+            <h3 class="nombre">{{ paquete.nombre }}</h3>
+            <p class="precio">
+              <span class="cantidad">{{ paquete.precio | number:'1.0-0' }}</span>
+              <span class="moneda">€</span>
+              <span class="desde">desde</span>
+            </p>
+            <p class="descripcion-paquete">{{ paquete.descripcion }}</p>
+
+            @if (paquete.caracteristicas?.length) {
+              <ul class="caracteristicas">
+                @for (caracteristica of paquete.caracteristicas; track caracteristica) {
+                  <li>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    {{ caracteristica }}
+                  </li>
+                }
+              </ul>
+            }
+
+            <button class="boton-primario" (click)="contratar()">Contratar</button>
+          </article>
+        }
+      </div>
+    }
+
+  </div>
+</section>

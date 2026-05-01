@@ -1,0 +1,92 @@
+<div class="admin-pagina">
+  <div class="pagina-cabecera">
+    <h1>Proveedores</h1>
+    <button class="boton-primario" (click)="abrirModal()">+ Nuevo proveedor</button>
+  </div>
+
+  @if (cargando()) {
+    <div class="cargando-contenedor"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+    <div class="tabla-card">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Activo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of proveedores(); track p.id) {
+            <tr>
+              <td><strong>{{ p.nombre }}</strong></td>
+              <td>{{ etiquetasCategoria[p.categoria] }}</td>
+              <td>{{ p.precio | number:'1.0-0' }} €</td>
+              <td>
+                @if (p.activo) { <span class="badge-si">Activo</span> }
+                @else { <span class="badge-no">Inactivo</span> }
+              </td>
+              <td class="acciones-col">
+                <button class="btn-accion" (click)="abrirModal(p)">Editar</button>
+                <button class="btn-accion eliminar" (click)="eliminar(p.id)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (modalAbierto()) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <h2>{{ editando() ? 'Editar proveedor' : 'Nuevo proveedor' }}</h2>
+      <form [formGroup]="form" class="modal-form">
+        <div class="campo">
+          <label>Nombre</label>
+          <input type="text" formControlName="nombre">
+        </div>
+        <div class="fila-doble">
+          <div class="campo">
+            <label>Categoría</label>
+            <select formControlName="categoria">
+              @for (cat of categorias; track cat) {
+                <option [value]="cat">{{ etiquetasCategoria[cat] }}</option>
+              }
+            </select>
+          </div>
+          <div class="campo">
+            <label>Precio (€)</label>
+            <input type="number" formControlName="precio" min="0">
+          </div>
+        </div>
+        <div class="campo">
+          <label>Descripción</label>
+          <textarea formControlName="descripcion" rows="2"></textarea>
+        </div>
+        <div class="campo">
+          <label>URL de foto</label>
+          <input type="url" formControlName="foto" placeholder="https://…">
+        </div>
+        <div class="campo campo-check">
+          <label>
+            <input type="checkbox" formControlName="activo">
+            Activo (visible para clientes)
+          </label>
+        </div>
+        @if (error()) { <div class="auth-alerta error">{{ error() }}</div> }
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModal()">Cancelar</button>
+          <button type="submit" class="boton-primario" [disabled]="form.invalid || guardando()" (click)="guardar()">
+            {{ guardando() ? '…' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

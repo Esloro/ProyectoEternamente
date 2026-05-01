@@ -1,0 +1,13 @@
+/* La pagina usa los estilos compartidos .auth-* de styles.scss */
+:host { display: block; }
+
+.enlace-olvido {
+  align-self: flex-end;
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+  margin-top: -0.5rem;
+}
+
+.enlace-olvido:hover {
+  color: var(--color-dorado);
+}

@@ -1,0 +1,277 @@
+:host { display: block; }
+
+.dashboard-pagina {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+/* ---------- Cabecera ---------- */
+.dashboard-cabecera {
+  text-align: center;
+  margin-bottom: 2.75rem;
+
+  .dashboard-saludo {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-dorado-oscuro);
+    margin-bottom: 0.6rem;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    color: var(--color-texto-secundario);
+    margin: 0 auto;
+    max-width: 460px;
+  }
+}
+
+.dashboard-divisor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+
+  span {
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-dorado), transparent);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-dorado);
+  }
+}
+
+/* ---------- Carga ---------- */
+.cargando-contenedor {
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-beige-medio);
+  border-top-color: var(--color-dorado);
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+
+/* ---------- Grid 3 x 2 ---------- */
+.tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 980px) {
+  .tarjetas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .tarjetas-grid { grid-template-columns: 1fr; gap: 1rem; }
+}
+
+/* ---------- Tarjeta ---------- */
+.tarjeta {
+  position: relative;
+  background: var(--color-blanco);
+  border-radius: var(--radio-grande);
+  box-shadow: var(--sombra-suave);
+  padding: 1.6rem 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  min-height: 230px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-texto);
+  border: 1px solid rgba(232, 223, 202, 0.6);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform var(--transicion-rapida),
+    box-shadow var(--transicion-rapida),
+    border-color var(--transicion-rapida);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-media);
+    border-color: rgba(201, 169, 97, 0.4);
+    color: var(--color-texto);
+
+    .tarjeta-flecha { transform: translateX(5px); }
+    .tarjeta-icono  { transform: scale(1.05) rotate(-2deg); }
+    .tarjeta-decoracion { opacity: 1; transform: scale(1.15); }
+  }
+}
+
+/* Forma decorativa de fondo (círculo difuminado en la esquina) */
+.tarjeta-decoracion {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  z-index: -1;
+  opacity: 0.55;
+  transition: opacity var(--transicion-media), transform var(--transicion-media);
+  filter: blur(2px);
+}
+
+/* ---------- Cabecera de la tarjeta ---------- */
+.tarjeta-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tarjeta-icono {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--transicion-rapida);
+
+  svg { width: 26px; height: 26px; }
+}
+
+.tarjeta-etiqueta {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-texto-secundario);
+  background: var(--color-fondo);
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+}
+
+/* ---------- Cuerpo ---------- */
+.tarjeta-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.tarjeta-valor {
+  font-size: 2.8rem;
+  font-weight: 700;
+  font-family: var(--fuente-titulo);
+  line-height: 1;
+  color: var(--color-texto);
+
+  small {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-texto-secundario);
+    margin-left: 0.25rem;
+  }
+}
+
+.tarjeta-valor-texto {
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-family: var(--fuente-titulo);
+  line-height: 1.15;
+  color: var(--color-texto);
+}
+
+.tarjeta-sub {
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+  line-height: 1.4;
+}
+
+/* ---------- Pie ---------- */
+.tarjeta-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(232, 223, 202, 0.7);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-dorado-oscuro);
+}
+
+.tarjeta-flecha {
+  font-size: 1.05rem;
+  transition: transform var(--transicion-rapida);
+}
+
+/* Tarjeta sin enlace (informativa) */
+.tarjeta-estatica {
+  cursor: default;
+
+  &:hover {
+    transform: none;
+    box-shadow: var(--sombra-suave);
+    border-color: rgba(232, 223, 202, 0.6);
+
+    .tarjeta-icono { transform: none; }
+    .tarjeta-decoracion { opacity: 0.55; transform: none; }
+  }
+}
+
+.tarjeta-pie-info {
+  color: var(--color-texto-secundario);
+  font-weight: 500;
+}
+
+.tarjeta-accion-info {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---------- Acentos por tarjeta ---------- */
+.tarjeta-clientes {
+  .tarjeta-icono     { background: rgba(100,130,200,0.14); color: #4469B0; }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(100,130,200,0.18), transparent 70%); }
+}
+.tarjeta-activas {
+  .tarjeta-icono     { background: rgba(107,142,90,0.16); color: var(--color-exito); }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(107,142,90,0.18), transparent 70%); }
+}
+.tarjeta-pendientes {
+  .tarjeta-icono     { background: rgba(201,169,97,0.18); color: var(--color-dorado-oscuro); }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(201,169,97,0.22), transparent 70%); }
+}
+.tarjeta-ingresos {
+  .tarjeta-icono     { background: rgba(61,61,61,0.10); color: var(--color-texto); }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(168,137,63,0.18), transparent 70%); }
+}
+.tarjeta-mensajes {
+  .tarjeta-icono     { background: rgba(184,84,80,0.16); color: var(--color-error); }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(184,84,80,0.16), transparent 70%); }
+}
+.tarjeta-chat {
+  .tarjeta-icono     { background: rgba(168,137,63,0.16); color: var(--color-dorado-oscuro); }
+  .tarjeta-decoracion { background: radial-gradient(circle, rgba(201,169,97,0.20), transparent 70%); }
+}
+
+@media (max-width: 600px) {
+  .tarjeta { min-height: 0; padding: 1.4rem; }
+  .tarjeta-valor { font-size: 2.2rem; }
+}

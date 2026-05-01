@@ -1,0 +1,131 @@
+# =====================================================================
+# Wedding Planner - Orquestación de servicios para desarrollo local
+# ---------------------------------------------------------------------
+# Servicios:
+#   - frontend  (Angular 21 con `ng serve`, hot reload)  -> http://localhost:4200
+#   - backend   (Laravel 11 con `php artisan serve`)     -> http://localhost:8000
+#   - mysql     (MySQL 8)                                -> localhost:3306
+#   - phpmyadmin (gestor visual de la BD)                -> http://localhost:8080
+#   - mailhog   (captura de emails de Laravel en dev)    -> http://localhost:8025
+#
+# Para producción, construir el frontend con el target `production`
+# (ver README.md). MySQL persiste en el volumen `mysql_datos`.
+# =====================================================================
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    container_name: wp_frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      # Montamos el código en caliente para hot-reload con `ng serve`.
+      - ./frontend:/app
+      # Volumen anónimo para que node_modules del contenedor no sea
+      # pisado por la carpeta vacía del host (importante en Windows).
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    networks:
+      - wp_red
+
+  backend:
+    build:
+      context: ./backend
+    container_name: wp_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+      # Volumen anónimo: el vendor/ pre-instalado en la imagen no es pisado
+      # por el bind-mount vacío del host. Mismo patrón que node_modules en
+      # el frontend. Esto evita que PHP lea los ~6000 archivos de Composer
+      # desde el filesystem lento de Windows.
+      - /var/www/html/vendor
+    environment:
+      # Estas variables las usará el .env de Laravel (se generará en el paso 2).
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: wedding_planner
+      DB_USERNAME: wedding_user
+      DB_PASSWORD: wedding_pass
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_FROM_ADDRESS: "no-reply@weddingplanner.local"
+      MAIL_FROM_NAME: "Wedding Planner"
+      APP_URL: http://localhost:8000
+      FRONTEND_URL: http://localhost:4200
+      # Permite atender hasta 10 peticiones en paralelo con el servidor
+      # de desarrollo de PHP (por defecto es single-threaded).
+      PHP_CLI_SERVER_WORKERS: 10
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    networks:
+      - wp_red
+
+  mysql:
+    image: mysql:8.0
+    container_name: wp_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: wedding_planner
+      MYSQL_USER: wedding_user
+      MYSQL_PASSWORD: wedding_pass
+    volumes:
+      - mysql_datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - wp_red
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: wp_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: rootpass
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - wp_red
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: wp_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"   # SMTP (lo usa Laravel)
+      - "8025:8025"   # Interfaz web para leer los emails
+    networks:
+      - wp_red
+
+volumes:
+  mysql_datos:
+    driver: local
+
+networks:
+  wp_red:
+    driver: bridge
