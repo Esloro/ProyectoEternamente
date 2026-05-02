@@ -32,7 +32,20 @@
       "Bash(docker exec *)",
       "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend ls -la /var/www/html/public/)",
       "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend ls /var/www/html/public/storage/bodas/)",
-      "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend *)"
+      "Bash(MSYS_NO_PATHCONV=1 docker exec wp_backend *)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(php -l app/Http/Controllers/Api/BodaController.php app/Http/Requests/Boda/ActualizarDetallesRequest.php)",
+      "Bash(php -l app/Http/Requests/Boda/ActualizarDetallesRequest.php)",
+      "Bash(php -l app/Models/Invitado.php)",
+      "Bash(php -l app/Models/Mesa.php)",
+      "Bash(php -l app/Http/Requests/Invitado/GuardarInvitadoRequest.php)",
+      "Bash(php -l app/Http/Controllers/Api/InvitadoController.php)",
+      "Bash(php -l database/migrations/2026_05_01_120000_add_num_acompanantes_to_invitados_table.php)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(command -v magick)",
+      "Bash(command -v convert)",
+      "Bash(command -v ffmpeg)"
     ]
   }
 }

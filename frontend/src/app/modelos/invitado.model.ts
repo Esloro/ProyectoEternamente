@@ -3,7 +3,7 @@ export interface Invitado {
   boda_id: number;
   nombre: string;
   alergias: string | null;
-  acompanante: boolean;
+  num_acompanantes: number;
   mesa_id: number | null;
   created_at: string;
   updated_at: string;

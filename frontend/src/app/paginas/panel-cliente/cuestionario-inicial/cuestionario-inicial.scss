@@ -5,6 +5,44 @@
   margin: 0 auto;
 }
 
+.bloqueo-verificacion {
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+  box-shadow: var(--sombra-suave);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-top: 2rem;
+
+  .bloqueo-icono {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(201, 169, 97, 0.12);
+    color: var(--color-dorado);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+
+    svg { width: 32px; height: 32px; }
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: var(--color-texto-secundario);
+    margin-bottom: 1.5rem;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .auth-alerta { max-width: 460px; margin: 0 auto; }
+}
+
 .cuestionario-cabecera {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -103,11 +141,9 @@
 
   label:first-child {
     display: block;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-texto-secundario);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-texto);
     margin-bottom: 0.6rem;
   }
 

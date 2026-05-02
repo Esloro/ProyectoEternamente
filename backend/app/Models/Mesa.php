@@ -34,9 +34,12 @@ class Mesa extends Model
         return $this->hasMany(Invitado::class, 'mesa_id');
     }
 
+    /**
+     * Cada invitado ocupa 1 plaza + sus acompañantes.
+     */
     public function plazasOcupadas(): int
     {
-        return $this->invitados()->count();
+        return (int) ($this->invitados()->sum('num_acompanantes') + $this->invitados()->count());
     }
 
     public function plazasLibres(): int

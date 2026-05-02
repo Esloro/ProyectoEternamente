@@ -3,7 +3,13 @@
 <main>
   <app-hero />
   <app-seccion-paquetes />
-  <app-seccion-portfolio />
+
+  @defer (on viewport; prefetch on idle) {
+    <app-seccion-portfolio />
+  } @placeholder {
+    <div class="placeholder-seccion" style="min-height:400px"></div>
+  }
+
   <app-seccion-testimonios />
   <app-seccion-sobre-nosotros />
   <app-seccion-contacto />

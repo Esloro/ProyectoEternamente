@@ -85,6 +85,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Mi boda (vista basica accesible aunque la boda este pendiente)
     Route::get('/mi-boda',                  [BodaController::class, 'miBoda']);
     Route::post('/mi-boda/cuestionario',    [BodaController::class, 'guardarCuestionario']);
+    Route::put('/mi-boda/detalles',         [BodaController::class, 'actualizarDetalles']);
 
 
     // -----------------------------------------------------------------

@@ -40,10 +40,28 @@
 
 .sidebar-logo {
   font-family: var(--fuente-titulo);
-  font-size: 1.3rem;
   color: var(--color-blanco);
   text-decoration: none;
-  span { color: var(--color-dorado); margin-left: 0.2rem; }
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
+
+  .marca-principal {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .marca-secundaria {
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    margin-top: 0.3rem;
+  }
 }
 
 .admin-badge {
@@ -166,9 +184,25 @@
 
   .panel-header-logo {
     font-family: var(--fuente-titulo);
-    font-size: 1.2rem;
-    span { color: var(--color-dorado); }
-    small { font-size: 0.7rem; color: var(--color-dorado); margin-left: 0.4rem; vertical-align: middle; }
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+
+    .marca-principal {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .marca-secundaria {
+      font-family: var(--fuente-cuerpo);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-dorado);
+      margin-top: 0.2rem;
+    }
   }
 }
 

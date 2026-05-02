@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Boda, DatosCuestionarioInicial, Proveedor, RespuestaApi } from '../modelos';
 
@@ -23,12 +24,27 @@ export class BodaService {
   private http = inject(HttpClient);
   private base = `${environment.apiUrl}/mi-boda`;
 
+  // Estado compartido de la boda actual del cliente. Cualquier componente
+  // que muestre datos de la boda (panel-cliente, resumen-boda, etc.) puede
+  // suscribirse a esta senal para reaccionar a cambios sin recargar.
+  readonly bodaActual = signal<Boda | null>(null);
+
   miBoda(): Observable<RespuestaApi<RespuestaMiBoda>> {
-    return this.http.get<RespuestaApi<RespuestaMiBoda>>(this.base);
+    return this.http
+      .get<RespuestaApi<RespuestaMiBoda>>(this.base)
+      .pipe(tap((r) => this.bodaActual.set(r.data.boda)));
   }
 
   guardarCuestionario(datos: DatosCuestionarioInicial): Observable<RespuestaApi<{ boda: Boda }>> {
-    return this.http.post<RespuestaApi<{ boda: Boda }>>(`${this.base}/cuestionario`, datos);
+    return this.http
+      .post<RespuestaApi<{ boda: Boda }>>(`${this.base}/cuestionario`, datos)
+      .pipe(tap((r) => this.bodaActual.set(r.data.boda)));
+  }
+
+  actualizarDetalles(datos: DatosCuestionarioInicial): Observable<RespuestaApi<{ boda: Boda }>> {
+    return this.http
+      .put<RespuestaApi<{ boda: Boda }>>(`${this.base}/detalles`, datos)
+      .pipe(tap((r) => this.bodaActual.set(r.data.boda)));
   }
 
   misProveedores(): Observable<RespuestaApi<RespuestaMisProveedores>> {

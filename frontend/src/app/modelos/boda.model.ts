@@ -3,7 +3,8 @@ import { Mesa } from './mesa.model';
 import { Invitado } from './invitado.model';
 
 export type EstadoBoda = 'pendiente_reunion' | 'activa' | 'finalizada' | 'cancelada';
-export type TipoCeremonia = 'civil' | 'iglesia' | 'aire_libre' | 'otra';
+export type TipoCeremonia = 'religiosa' | 'civil_ayuntamiento' | 'simbolica' | 'renovacion_votos';
+export type LugarCelebracion = 'iglesia' | 'ayuntamiento' | 'finca' | 'playa' | 'jardin' | 'restaurante' | 'otro';
 export type FranjaHoraria = 'manana' | 'tarde' | 'noche';
 export type Tematica = 'clasica' | 'rustica' | 'moderna' | 'boho' | 'glamour';
 export type TipoComida = 'coctel' | 'banquete' | 'buffet' | 'familiar';
@@ -12,8 +13,9 @@ export type PresupuestoOrientativo = 'hasta_10000' | '10000_20000' | '20000_3500
 export interface Boda {
   id: number;
   usuario_id: number;
+  nombre_pareja: string | null;
   tipo_ceremonia: TipoCeremonia;
-  iglesia: string | null;
+  lugar_celebracion: LugarCelebracion;
   fecha_boda: string;       // ISO
   num_invitados: number;
   franja_horaria: FranjaHoraria;
@@ -37,8 +39,9 @@ export interface Boda {
  * tabla `bodas` excepto los gestionados por el sistema.
  */
 export interface DatosCuestionarioInicial {
+  nombre_pareja: string;
   tipo_ceremonia: TipoCeremonia;
-  iglesia?: string | null;
+  lugar_celebracion: LugarCelebracion;
   fecha_boda: string;
   num_invitados: number;
   franja_horaria: FranjaHoraria;
@@ -55,10 +58,20 @@ export const ETIQUETAS_FRANJA: Record<FranjaHoraria, string> = {
 };
 
 export const ETIQUETAS_CEREMONIA: Record<TipoCeremonia, string> = {
-  civil: 'Civil',
+  religiosa: 'Religiosa',
+  civil_ayuntamiento: 'Civil ayuntamiento/juzgado',
+  simbolica: 'Ceremonia simbólica',
+  renovacion_votos: 'Renovación de votos',
+};
+
+export const ETIQUETAS_LUGAR: Record<LugarCelebracion, string> = {
   iglesia: 'Iglesia',
-  aire_libre: 'Al aire libre',
-  otra: 'Otra',
+  ayuntamiento: 'Ayuntamiento/juzgado',
+  finca: 'Finca o hacienda',
+  playa: 'Playa',
+  jardin: 'Jardín/Mirador',
+  restaurante: 'Restaurante',
+  otro: 'Otro',
 };
 
 export const ETIQUETAS_TEMATICA: Record<Tematica, string> = {

@@ -9,6 +9,7 @@ import {
   EstadoBoda,
   ETIQUETAS_ESTADO,
   ETIQUETAS_CEREMONIA,
+  ETIQUETAS_LUGAR,
   ETIQUETAS_FRANJA,
   ETIQUETAS_TEMATICA,
   ETIQUETAS_COMIDA,
@@ -39,6 +40,7 @@ export class BodaDetalle implements OnInit {
 
   protected readonly etiquetasEstado = ETIQUETAS_ESTADO;
   protected readonly etiquetasCeremonia = ETIQUETAS_CEREMONIA;
+  protected readonly etiquetasLugar = ETIQUETAS_LUGAR;
   protected readonly etiquetasFranja = ETIQUETAS_FRANJA;
   protected readonly etiquetasTematica = ETIQUETAS_TEMATICA;
   protected readonly etiquetasComida = ETIQUETAS_COMIDA;

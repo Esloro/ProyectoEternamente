@@ -55,7 +55,7 @@
           @for (inv of sinMesa(); track inv.id) {
             <div class="invitado-chip" cdkDrag [cdkDragData]="inv">
               <span class="inv-nombre">{{ inv.nombre }}</span>
-              @if (inv.acompanante) { <span class="inv-badge">+1</span> }
+              @if (inv.num_acompanantes > 0) { <span class="inv-badge">+{{ inv.num_acompanantes }}</span> }
               @if (inv.alergias) { <span class="inv-alergia" title="Alergias: {{ inv.alergias }}">⚠</span> }
               <div class="inv-acciones">
                 <button (click)="abrirModalInvitado(inv)" title="Editar">✏</button>
@@ -83,7 +83,7 @@
             <div class="mesa-header">
               <div>
                 <h3>Mesa {{ mesa.numero }}</h3>
-                <span class="mesa-capacidad">{{ mesa.invitadosLista.length }} / {{ mesa.capacidad }}</span>
+                <span class="mesa-capacidad">{{ ocupacionMesa(mesa) }} / {{ mesa.capacidad }}</span>
               </div>
               <div class="mesa-acciones">
                 <button (click)="abrirModalMesa(mesa)" title="Editar">✏</button>
@@ -95,8 +95,8 @@
             <div class="capacidad-barra">
               <div
                 class="capacidad-fill"
-                [style.width.%]="Math.min(100, (mesa.invitadosLista.length / mesa.capacidad) * 100)"
-                [class.llena]="mesa.invitadosLista.length >= mesa.capacidad"
+                [style.width.%]="Math.min(100, (ocupacionMesa(mesa) / mesa.capacidad) * 100)"
+                [class.llena]="ocupacionMesa(mesa) >= mesa.capacidad"
               ></div>
             </div>
 
@@ -111,7 +111,7 @@
               @for (inv of mesa.invitadosLista; track inv.id) {
                 <div class="invitado-chip" cdkDrag [cdkDragData]="inv">
                   <span class="inv-nombre">{{ inv.nombre }}</span>
-                  @if (inv.acompanante) { <span class="inv-badge">+1</span> }
+                  @if (inv.num_acompanantes > 0) { <span class="inv-badge">+{{ inv.num_acompanantes }}</span> }
                   @if (inv.alergias) { <span class="inv-alergia" title="Alergias: {{ inv.alergias }}">⚠</span> }
                   <div class="inv-acciones">
                     <button (click)="abrirModalInvitado(inv)" title="Editar">✏</button>
@@ -173,11 +173,20 @@
           <label for="inv-alergias">Alergias o restricciones alimentarias</label>
           <input id="inv-alergias" type="text" formControlName="alergias" placeholder="Ej: gluten, lactosa…">
         </div>
-        <div class="campo campo-check">
-          <label>
-            <input type="checkbox" formControlName="acompanante">
-            Viene con acompañante (+1)
-          </label>
+        <div class="campo">
+          <label for="inv-acompanantes">Número de acompañantes</label>
+          <input
+            id="inv-acompanantes"
+            type="number"
+            formControlName="num_acompanantes"
+            min="0"
+            max="20"
+            [class.invalido]="formInvitado.get('num_acompanantes')?.invalid && formInvitado.get('num_acompanantes')?.touched"
+          >
+          <span class="campo-ayuda">El invitado más sus acompañantes ocuparán {{ 1 + (formInvitado.get('num_acompanantes')?.value ?? 0) }} plazas en la mesa.</span>
+          @if (formInvitado.get('num_acompanantes')?.invalid && formInvitado.get('num_acompanantes')?.touched) {
+            <span class="error-campo">Introduce un número entre 0 y 20.</span>
+          }
         </div>
         <div class="modal-acciones">
           <button type="button" class="boton-secundario" (click)="cerrarModalInvitado()">Cancelar</button>

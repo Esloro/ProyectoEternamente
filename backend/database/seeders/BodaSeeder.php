@@ -24,8 +24,9 @@ class BodaSeeder extends Seeder
         // -------------------------------------------------------------
         Boda::create([
             'usuario_id' => $lucia->id,
-            'tipo_ceremonia' => 'iglesia',
-            'iglesia' => 'Iglesia de San Antonio (Madrid)',
+            'nombre_pareja' => 'Lucia y David',
+            'tipo_ceremonia' => 'religiosa',
+            'lugar_celebracion' => 'iglesia',
             'fecha_boda' => '2026-09-15',
             'num_invitados' => 120,
             'franja_horaria' => 'tarde',
@@ -42,8 +43,9 @@ class BodaSeeder extends Seeder
         // -------------------------------------------------------------
         $bodaCarlos = Boda::create([
             'usuario_id' => $carlos->id,
-            'tipo_ceremonia' => 'aire_libre',
-            'iglesia' => null,
+            'nombre_pareja' => 'Carlos y Marta',
+            'tipo_ceremonia' => 'simbolica',
+            'lugar_celebracion' => 'finca',
             'fecha_boda' => '2026-07-10',
             'num_invitados' => 80,
             'franja_horaria' => 'tarde',
@@ -71,7 +73,7 @@ class BodaSeeder extends Seeder
         // Algunos invitados de prueba (los demas se añadiran desde el panel).
         Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Maria Lopez',     'mesa_id' => $mesa1->id]);
         Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Juan Perez',      'alergias' => 'Frutos secos', 'mesa_id' => $mesa1->id]);
-        Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Ana Garcia',      'acompanante' => true, 'mesa_id' => $mesa2->id]);
+        Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Ana Garcia',      'num_acompanantes' => 1, 'mesa_id' => $mesa2->id]);
         Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Pedro Martinez',  'mesa_id' => $mesa2->id]);
         Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Sofia Ramirez',   'alergias' => 'Lactosa', 'mesa_id' => $mesa3->id]);
         Invitado::create(['boda_id' => $bodaCarlos->id, 'nombre' => 'Diego Hernandez']); // sin mesa asignada

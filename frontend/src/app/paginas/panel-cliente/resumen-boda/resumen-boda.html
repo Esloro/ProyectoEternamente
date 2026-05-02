@@ -13,7 +13,7 @@
       <div class="sin-boda-icono">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </div>
-      <h1>¡Bienvenida a WeddingPlanner!</h1>
+      <h1>¡Bienvenida a Eternamente!</h1>
       <p>Todavía no has rellenado el cuestionario inicial. Solo te llevará unos minutos y nos ayudará a preparar la boda de tus sueños.</p>
       <a routerLink="/panel/cuestionario" class="boton-primario">Empezar cuestionario</a>
     </div>
@@ -43,10 +43,156 @@
         }
       </div>
 
-      <!-- Tarjetas de estado para bodas activas -->
+      <!-- Detalles de la boda -->
+      <div class="detalles-seccion">
+        <div class="detalles-cabecera">
+          <h2>Detalles de vuestra boda</h2>
+          @if (editable() && !editando()) {
+            <button type="button" class="boton-editar" (click)="iniciarEdicion()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Editar
+            </button>
+          }
+        </div>
+
+        @if (mensajeExito()) {
+          <div class="auth-alerta exito" style="margin-bottom:1rem">{{ mensajeExito() }}</div>
+        }
+
+        @if (!editando()) {
+          <!-- Vista de solo lectura -->
+          <div class="detalles-grid">
+            @if (boda()!.nombre_pareja) {
+              <div class="detalle-item">
+                <span class="detalle-etiqueta">Pareja</span>
+                <span class="detalle-valor">{{ boda()!.nombre_pareja }}</span>
+              </div>
+            }
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Tipo de ceremonia</span>
+              <span class="detalle-valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Lugar de celebración</span>
+              <span class="detalle-valor">{{ etiquetasLugar[boda()!.lugar_celebracion] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Fecha de la boda</span>
+              <span class="detalle-valor">{{ boda()!.fecha_boda | date:'d MMM yyyy':'':'es-ES' }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Número de invitados</span>
+              <span class="detalle-valor">{{ boda()!.num_invitados }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Horario</span>
+              <span class="detalle-valor">{{ etiquetasFranja[boda()!.franja_horaria] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Temática</span>
+              <span class="detalle-valor">{{ etiquetasTematica[boda()!.tematica] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Tipo de comida</span>
+              <span class="detalle-valor">{{ etiquetasComida[boda()!.tipo_comida] }}</span>
+            </div>
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Presupuesto orientativo</span>
+              <span class="detalle-valor">{{ etiquetasPresupuesto[boda()!.presupuesto_orientativo] }}</span>
+            </div>
+          </div>
+        } @else {
+          <!-- Vista de edición -->
+          <form [formGroup]="form" (ngSubmit)="guardarDetalles()" class="detalles-form">
+            <div class="form-grid">
+              <div class="campo campo-ancho">
+                <label for="nombre_pareja">Nombre de la pareja</label>
+                <input id="nombre_pareja" type="text" formControlName="nombre_pareja" placeholder="Ej: Lucía y David">
+              </div>
+
+              <div class="campo">
+                <label for="tipo_ceremonia">Tipo de ceremonia</label>
+                <select id="tipo_ceremonia" formControlName="tipo_ceremonia">
+                  @for (op of tiposCeremonia; track op.valor) {
+                    <option [value]="op.valor">{{ op.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="lugar_celebracion">Lugar de celebración</label>
+                <select id="lugar_celebracion" formControlName="lugar_celebracion">
+                  @for (l of lugaresCelebracion; track l.valor) {
+                    <option [value]="l.valor">{{ l.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="fecha_boda">Fecha de la boda</label>
+                <input id="fecha_boda" type="date" formControlName="fecha_boda">
+              </div>
+
+              <div class="campo">
+                <label for="num_invitados">Número de invitados</label>
+                <input id="num_invitados" type="number" formControlName="num_invitados" min="1" max="2000">
+              </div>
+
+              <div class="campo">
+                <label for="franja_horaria">Horario</label>
+                <select id="franja_horaria" formControlName="franja_horaria">
+                  @for (f of franjas; track f.valor) {
+                    <option [value]="f.valor">{{ f.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="tematica">Temática</label>
+                <select id="tematica" formControlName="tematica">
+                  @for (t of tematicas; track t.valor) {
+                    <option [value]="t.valor">{{ t.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="tipo_comida">Tipo de comida</label>
+                <select id="tipo_comida" formControlName="tipo_comida">
+                  @for (c of tiposComida; track c.valor) {
+                    <option [value]="c.valor">{{ c.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="presupuesto_orientativo">Presupuesto orientativo</label>
+                <select id="presupuesto_orientativo" formControlName="presupuesto_orientativo">
+                  @for (p of presupuestos; track p.valor) {
+                    <option [value]="p.valor">{{ p.etiqueta }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            @if (error()) {
+              <div class="auth-alerta error">{{ error() }}</div>
+            }
+
+            <div class="form-acciones">
+              <button type="button" class="boton-secundario" (click)="cancelarEdicion()" [disabled]="guardando()">Cancelar</button>
+              <button type="submit" class="boton-primario" [disabled]="form.invalid || guardando()">
+                {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+
+      <!-- Tarjetas de acceso (clicables) -->
       @if (boda()!.estado === 'activa') {
         <div class="tarjetas-stats">
-          <div class="stat-card">
+          <a [routerLink]="'/panel/mesas'" class="stat-card">
             <div class="stat-icono invitados">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
@@ -54,11 +200,11 @@
               <span class="stat-valor">{{ boda()!.num_invitados }}</span>
               <span class="stat-etiqueta">Invitados estimados</span>
             </div>
-          </div>
+          </a>
 
-          <div class="stat-card">
+          <a [routerLink]="'/panel/presupuesto'" class="stat-card">
             <div class="stat-icono presupuesto">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5.5A7 7 0 0 0 14.5 4a8 8 0 0 0 0 16 7 7 0 0 0 4.5-1.5"/><line x1="3.5" y1="10" x2="14" y2="10"/><line x1="3.5" y1="14" x2="14" y2="14"/></svg>
             </div>
             <div class="stat-info">
               @if (boda()!.presupuesto_definitivo) {
@@ -69,85 +215,27 @@
                 <span class="stat-etiqueta">Presupuesto estimado</span>
               }
             </div>
-          </div>
+          </a>
 
-          <div class="stat-card" [routerLink]="'/panel/personalizacion'">
+          <a [routerLink]="'/panel/personalizacion'" class="stat-card">
             <div class="stat-icono proveedores">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
             <div class="stat-info">
               <span class="stat-valor">{{ boda()!.proveedores?.length ?? 0 }}</span>
-              <span class="stat-etiqueta">Proveedores elegidos</span>
+              <span class="stat-etiqueta">Proveedores</span>
             </div>
-          </div>
+          </a>
 
-          <div class="stat-card" [routerLink]="'/panel/mesas'">
-            <div class="stat-icono mesas">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <a [routerLink]="'/panel/chat'" class="stat-card">
+            <div class="stat-icono chat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <div class="stat-info">
-              <span class="stat-valor">{{ boda()!.mesas?.length ?? 0 }}</span>
-              <span class="stat-etiqueta">Mesas configuradas</span>
+              <span class="stat-valor">Chat</span>
+              <span class="stat-etiqueta">Habla con tu wedding planner</span>
             </div>
-          </div>
-        </div>
-      }
-
-      <!-- Detalles de la boda -->
-      <div class="detalles-seccion">
-        <h2>Detalles de vuestra boda</h2>
-        <div class="detalles-grid">
-          <div class="detalle-item">
-            <span class="detalle-etiqueta">Tipo de ceremonia</span>
-            <span class="detalle-valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
-          </div>
-          @if (boda()!.iglesia) {
-            <div class="detalle-item">
-              <span class="detalle-etiqueta">Lugar de la ceremonia</span>
-              <span class="detalle-valor">{{ boda()!.iglesia }}</span>
-            </div>
-          }
-          <div class="detalle-item">
-            <span class="detalle-etiqueta">Horario</span>
-            <span class="detalle-valor">{{ etiquetasFranja[boda()!.franja_horaria] }}</span>
-          </div>
-          <div class="detalle-item">
-            <span class="detalle-etiqueta">Temática</span>
-            <span class="detalle-valor">{{ etiquetasTematica[boda()!.tematica] }}</span>
-          </div>
-          <div class="detalle-item">
-            <span class="detalle-etiqueta">Tipo de comida</span>
-            <span class="detalle-valor">{{ etiquetasComida[boda()!.tipo_comida] }}</span>
-          </div>
-          <div class="detalle-item">
-            <span class="detalle-etiqueta">Presupuesto orientativo</span>
-            <span class="detalle-valor">{{ etiquetasPresupuesto[boda()!.presupuesto_orientativo] }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Accesos rápidos para boda activa -->
-      @if (boda()!.estado === 'activa') {
-        <div class="accesos-rapidos">
-          <h2>Accesos rápidos</h2>
-          <div class="accesos-grid">
-            <a routerLink="/panel/personalizacion" class="acceso-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <span>Proveedores</span>
-            </a>
-            <a routerLink="/panel/mesas" class="acceso-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="22"/></svg>
-              <span>Mesas</span>
-            </a>
-            <a routerLink="/panel/presupuesto" class="acceso-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              <span>Presupuesto</span>
-            </a>
-            <a routerLink="/panel/chat" class="acceso-card">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              <span>Chat</span>
-            </a>
-          </div>
+          </a>
         </div>
       }
 

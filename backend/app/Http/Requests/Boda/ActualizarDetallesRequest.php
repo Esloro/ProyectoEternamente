@@ -5,7 +5,11 @@ namespace App\Http\Requests\Boda;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CuestionarioInicialRequest extends FormRequest
+/**
+ * Validacion al editar los detalles de la boda desde el panel del cliente.
+ * Mismas reglas que el cuestionario inicial.
+ */
+class ActualizarDetallesRequest extends FormRequest
 {
     public function authorize(): bool
     {

@@ -59,11 +59,16 @@ class InvitadoController extends Controller
         $invitado = Invitado::findOrFail($datos['invitado_id']);
         $this->verificarPropiedad($request, $invitado);
 
-        // Si nos dan una mesa, comprobamos capacidad.
-        if (! is_null($datos['mesa_id'])) {
+        // Si nos dan una mesa, comprobamos capacidad teniendo en cuenta
+        // al propio invitado y sus acompañantes.
+        if (! is_null($datos['mesa_id']) && $invitado->mesa_id !== $datos['mesa_id']) {
             $mesa = \App\Models\Mesa::find($datos['mesa_id']);
-            if ($mesa && $mesa->plazasOcupadas() >= $mesa->capacidad && $invitado->mesa_id !== $mesa->id) {
-                return $this->ko('La mesa ' . $mesa->numero . ' ya esta llena.', 422);
+            $plazasNecesarias = $invitado->plazasQueOcupa();
+            if ($mesa && $mesa->plazasOcupadas() + $plazasNecesarias > $mesa->capacidad) {
+                return $this->ko(
+                    'En la mesa ' . $mesa->numero . ' no hay plazas suficientes para este invitado y sus acompañantes.',
+                    422
+                );
             }
         }
 

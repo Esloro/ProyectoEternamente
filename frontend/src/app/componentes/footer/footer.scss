@@ -42,14 +42,27 @@
 
 .marca .logo {
   font-family: var(--fuente-titulo);
-  font-size: 1.6rem;
   color: var(--color-blanco);
   margin-bottom: var(--espacio-sm);
-}
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1;
 
-.marca .logo span {
-  color: var(--color-dorado);
-  margin-left: 0.25rem;
+  .marca-principal {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+
+  .marca-secundaria {
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-dorado);
+    margin-top: 0.4rem;
+  }
 }
 
 .contacto-info li {
