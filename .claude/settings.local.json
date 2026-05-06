@@ -45,7 +45,11 @@
       "Bash(echo \"Exit: $?\")",
       "Bash(command -v magick)",
       "Bash(command -v convert)",
-      "Bash(command -v ffmpeg)"
+      "Bash(command -v ffmpeg)",
+      "Bash(command -v pdftotext)",
+      "Bash(command -v pdf2txt)",
+      "Bash(pdftotext -layout \"C:/Users/esme_/Documents/ProyectoIntermodular/memoria/PROYECTO_ESMERALDA.pdf\" \"C:/Users/esme_/Documents/ProyectoIntermodular/memoria/_extracted.txt\")",
+      "Bash(grep *)"
     ]
   }
 }

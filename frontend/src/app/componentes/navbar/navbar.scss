@@ -13,11 +13,14 @@
 }
 
 /* Sobre el hero: fondo transparente, texto blanco con sombra para legibilidad */
-.navbar:not(.scrolleado) .logo {
+.navbar:not(.scrolleado) .logo .logo-marca {
   color: var(--color-blanco);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 }
 
-.navbar:not(.scrolleado) .logo-marca-secundaria {
+.navbar:not(.scrolleado) .logo .logo-marca-secundaria,
+.navbar:not(.scrolleado) .logo .logo-divisor,
+.navbar:not(.scrolleado) .logo .logo-monograma {
   color: var(--color-dorado);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
@@ -43,8 +46,14 @@
   box-shadow: var(--sombra-suave);
 }
 
-.navbar.scrolleado .logo {
+.navbar.scrolleado .logo .logo-marca {
   color: var(--color-texto);
+}
+
+.navbar.scrolleado .logo .logo-marca-secundaria,
+.navbar.scrolleado .logo .logo-divisor,
+.navbar.scrolleado .logo .logo-monograma {
+  color: var(--color-dorado);
 }
 
 .navbar.scrolleado .enlaces a {
@@ -71,28 +80,89 @@
 
 .logo {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-family: var(--fuente-titulo);
-  line-height: 1;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
   white-space: nowrap;
-  transition: color var(--transicion-media);
+  line-height: 1;
+}
+
+.logo-texto {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
 }
 
 .logo-marca {
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-size: 1.95rem;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1;
+}
+
+.logo-marca-inicial {
+  position: relative;
+  display: inline-block;
+
+  .letra {
+    position: relative;
+    z-index: 0;
+  }
+
+  .rama {
+    position: absolute;
+    left: -0.4em;
+    bottom: -0.05em;
+    width: 0.95em;
+    height: 1.4em;
+    color: var(--color-dorado);
+    pointer-events: none;
+    z-index: 1;
+  }
 }
 
 .logo-marca-secundaria {
-  font-family: var(--fuente-cuerpo);
-  font-size: 0.65rem;
-  font-weight: 400;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
   color: var(--color-dorado);
-  margin-top: 0.25rem;
+
+  .dash {
+    width: 14px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
+  .texto {
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.55rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+}
+
+.logo-divisor {
+  width: 1px;
+  height: 44px;
+  background: currentColor;
+  color: var(--color-dorado);
+  opacity: 0.55;
+}
+
+.logo-monograma {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--color-dorado);
 }
 
 /* Contenedor unificado (dropdown en movil) */
@@ -258,4 +328,18 @@
   .saludo {
     max-width: none;
   }
+
+  /* Logo: en móvil reducimos para que entre con el botón menú */
+  .logo { gap: 0.6rem; }
+  .logo-marca { font-size: 1.55rem; }
+  .logo-marca-secundaria .texto { font-size: 0.5rem; letter-spacing: 0.35em; }
+  .logo-marca-secundaria .dash { width: 10px; }
+  .logo-divisor { height: 38px; }
+  .logo-monograma { font-size: 2rem; }
+}
+
+@media (max-width: 480px) {
+  /* En pantallas muy pequeñas ocultamos divisor y monograma para no romper layout */
+  .logo-divisor,
+  .logo-monograma { display: none; }
 }

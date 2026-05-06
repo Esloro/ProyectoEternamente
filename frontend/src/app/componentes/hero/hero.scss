@@ -12,7 +12,7 @@
 .hero-fondo {
   position: absolute;
   inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&q=85&fit=crop');
+  background-image: url('http://localhost:8000/storage/bodas/m8.jpg');
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -25,9 +25,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.55) 0%,    /* zona del navbar: más oscuro para que las letras se lean */
-    rgba(0, 0, 0, 0.25) 35%,
-    rgba(0, 0, 0, 0.50) 100%
+    rgba(0, 0, 0, 0.55) 0%,
+    /* zona del navbar: más oscuro para que las letras se lean */ rgba(0, 0, 0, 0.25) 35%,
+    rgba(0, 0, 0, 0.5) 100%
   );
   z-index: 1;
 }
@@ -52,11 +52,14 @@
 
 .hero-titulo {
   font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 500;
-  color: var(--color-blanco);
-  margin-bottom: var(--espacio-md);
+  font-weight: 200;
+  color: white;
+  margin-bottom: var(--espacio-sm);
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  line-height: 1.1;
+  line-height: 1.3;
+  font-family:
+    Cormorant Garamond,
+    serif;
 }
 
 .hero-subtitulo {
