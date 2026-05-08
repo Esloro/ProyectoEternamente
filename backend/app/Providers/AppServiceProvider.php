@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Usuario;
 use App\Notifications\RecuperarPasswordNotification;
 use App\Notifications\VerificarEmailNotification;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -22,12 +21,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         ResetPassword::toMailUsing(function ($notifiable, string $token) {
-            $notification = new RecuperarPasswordNotification($token);
-            return $notification->toMail($notifiable);
+            return (new RecuperarPasswordNotification($token))->toMail($notifiable);
         });
-
-        // Hacemos que Laravel use el modelo Usuario donde implicitamente
-        // espera "User" (por ejemplo en el comando make:auth tools).
-        $this->app['config']->set('auth.providers.users.model', Usuario::class);
     }
 }

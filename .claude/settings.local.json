@@ -49,7 +49,11 @@
       "Bash(command -v pdftotext)",
       "Bash(command -v pdf2txt)",
       "Bash(pdftotext -layout \"C:/Users/esme_/Documents/ProyectoIntermodular/memoria/PROYECTO_ESMERALDA.pdf\" \"C:/Users/esme_/Documents/ProyectoIntermodular/memoria/_extracted.txt\")",
-      "Bash(grep *)"
+      "Bash(grep *)",
+      "Bash(awk '{print $5, $NF}')",
+      "Bash(mkdir -p _backup_originales)",
+      "Bash(cp -n *.jpg *.jpeg *.webp *.avif _backup_originales/)",
+      "Bash(docker run *)"
     ]
   }
 }
