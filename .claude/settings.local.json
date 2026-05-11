@@ -53,7 +53,17 @@
       "Bash(awk '{print $5, $NF}')",
       "Bash(mkdir -p _backup_originales)",
       "Bash(cp -n *.jpg *.jpeg *.webp *.avif _backup_originales/)",
-      "Bash(docker run *)"
+      "Bash(docker run *)",
+      "Bash(where node *)",
+      "Bash(where npm *)",
+      "Bash(where docker *)",
+      "Bash(npm ls *)",
+      "Bash(mkdir -p /c/Users/esme_/Documents/ProyectoIntermodular/scripts-capturas)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx playwright *)",
+      "Bash(node *)",
+      "PowerShell(Get-Process *)"
     ]
   }
 }
