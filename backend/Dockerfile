@@ -61,6 +61,12 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
+# Copiamos el resto del codigo de la aplicacion.
+# En desarrollo el bind-mount de docker-compose.yml sobreescribe estos
+# archivos con los del host (hot-reload). En produccion (docker-compose.prod.yml)
+# no hay bind-mount, asi que esta es la unica fuente de codigo dentro del contenedor.
+COPY . .
+
 EXPOSE 8000
 
 CMD ["sh", "-c", "\

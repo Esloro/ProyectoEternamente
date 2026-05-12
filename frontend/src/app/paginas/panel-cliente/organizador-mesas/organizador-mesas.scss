@@ -306,6 +306,12 @@
 
   .error-campo { color: var(--color-error); font-size: 0.8rem; }
 
+  .campo-ayuda {
+    font-size: 0.8rem;
+    color: var(--color-texto-secundario);
+    font-style: italic;
+  }
+
   &.campo-check label {
     display: flex;
     align-items: center;

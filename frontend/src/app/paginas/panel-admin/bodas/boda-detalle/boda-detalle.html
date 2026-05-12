@@ -109,6 +109,12 @@
         <div class="seccion-card">
           <h2>Información de la boda</h2>
           <div class="detalles-grid">
+            @if (boda()!.nombre_pareja) {
+              <div class="detalle-item">
+                <span class="detalle-etiqueta">Pareja</span>
+                <span class="detalle-valor">{{ boda()!.nombre_pareja }}</span>
+              </div>
+            }
             <div class="detalle-item">
               <span class="detalle-etiqueta">Fecha</span>
               <span class="detalle-valor">{{ boda()!.fecha_boda | date:'EEEE, d MMMM yyyy':'':'es-ES' }}</span>
@@ -117,12 +123,10 @@
               <span class="detalle-etiqueta">Ceremonia</span>
               <span class="detalle-valor">{{ etiquetasCeremonia[boda()!.tipo_ceremonia] }}</span>
             </div>
-            @if (boda()!.iglesia) {
-              <div class="detalle-item">
-                <span class="detalle-etiqueta">Lugar</span>
-                <span class="detalle-valor">{{ boda()!.iglesia }}</span>
-              </div>
-            }
+            <div class="detalle-item">
+              <span class="detalle-etiqueta">Lugar</span>
+              <span class="detalle-valor">{{ etiquetasLugar[boda()!.lugar_celebracion] }}</span>
+            </div>
             <div class="detalle-item">
               <span class="detalle-etiqueta">Invitados</span>
               <span class="detalle-valor">{{ boda()!.num_invitados }}</span>

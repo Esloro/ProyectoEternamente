@@ -38,9 +38,4 @@ class Mensaje extends Model
     {
         return $this->belongsTo(Usuario::class, 'receptor_id');
     }
-
-    public function scopeNoLeidos($consulta)
-    {
-        return $consulta->where('leido', false);
-    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Boda\ActualizarDetallesRequest;
 use App\Http\Requests\Boda\CuestionarioInicialRequest;
 use App\Http\Requests\Boda\GuardarProveedoresRequest;
 use App\Models\Boda;
@@ -55,6 +56,31 @@ class BodaController extends Controller
             ['boda' => $boda],
             'Hemos recibido tus datos. Nos pondremos en contacto contigo para concertar la reunion inicial.',
             201
+        );
+    }
+
+    /**
+     * Actualiza los detalles de la boda del cliente (los datos que se
+     * configuraron en el cuestionario inicial). Permitido mientras la
+     * boda no este finalizada o cancelada.
+     */
+    public function actualizarDetalles(ActualizarDetallesRequest $request)
+    {
+        $boda = $request->user()->bodas()->latest()->first();
+
+        if (! $boda) {
+            return $this->ko('Todavia no has rellenado el cuestionario inicial.', 404);
+        }
+
+        if (in_array($boda->estado, [Boda::ESTADO_FINALIZADA, Boda::ESTADO_CANCELADA], true)) {
+            return $this->ko('No puedes modificar los detalles de una boda finalizada o cancelada.', 422);
+        }
+
+        $boda->update($request->validated());
+
+        return $this->ok(
+            ['boda' => $boda->fresh(['proveedores', 'mesas', 'invitados'])],
+            'Detalles de la boda actualizados.'
         );
     }
 

@@ -16,8 +16,9 @@ class Boda extends Model
 
     protected $fillable = [
         'usuario_id',
+        'nombre_pareja',
         'tipo_ceremonia',
-        'iglesia',
+        'lugar_celebracion',
         'fecha_boda',
         'num_invitados',
         'franja_horaria',
@@ -30,7 +31,11 @@ class Boda extends Model
     ];
 
     protected $casts = [
-        'fecha_boda' => 'date',
+        // Serializamos como 'Y-m-d' para que el JSON no incluya hora ni
+        // zona horaria. Si no, con APP_TIMEZONE=Europe/Madrid Carbon
+        // convierte a UTC y le resta dos horas, lo que en el frontend
+        // (substring 10) hace que la fecha pierda un dia en cada save.
+        'fecha_boda' => 'date:Y-m-d',
         'num_invitados' => 'integer',
         'presupuesto_estimado' => 'decimal:2',
         'presupuesto_definitivo' => 'decimal:2',

@@ -1,0 +1,28 @@
+# =====================================================================
+# Caddy - reverse proxy con HTTPS automatico para el backend.
+# Caddy gestiona los certificados Let's Encrypt en segundo plano,
+# no necesitas certbot ni renovaciones manuales.
+#
+# Cuando despliegues:
+#   1. Apunta el registro DNS A de api.eternamente.tech a la IP del Droplet.
+#   2. Espera a que el DNS se propague (1-30 min).
+#   3. Levanta los contenedores: docker compose -f docker-compose.prod.yml up -d
+#   4. Caddy obtiene el certificado en su primer arranque.
+# =====================================================================
+
+api.eternamente.tech {
+    # Email para Let's Encrypt (avisos de expiracion).
+    tls esmeralda.lrodero@gmail.com
+
+    # Compresion de respuestas.
+    encode gzip zstd
+
+    # Todo el trafico al contenedor del backend (puerto 8000 interno).
+    reverse_proxy backend:8000
+
+    # Logs en formato JSON (visibles con `docker compose logs caddy`).
+    log {
+        output stdout
+        format json
+    }
+}

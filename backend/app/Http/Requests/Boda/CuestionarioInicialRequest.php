@@ -15,8 +15,9 @@ class CuestionarioInicialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tipo_ceremonia'           => ['required', Rule::in(['civil', 'iglesia', 'aire_libre', 'otra'])],
-            'iglesia'                  => ['nullable', 'required_if:tipo_ceremonia,iglesia', 'string', 'max:200'],
+            'nombre_pareja'            => ['required', 'string', 'max:150'],
+            'tipo_ceremonia'           => ['required', Rule::in(['religiosa', 'civil_ayuntamiento', 'simbolica', 'renovacion_votos'])],
+            'lugar_celebracion'        => ['required', Rule::in(['iglesia', 'ayuntamiento', 'finca', 'playa', 'jardin', 'restaurante', 'otro'])],
             'fecha_boda'               => ['required', 'date', 'after:today'],
             'num_invitados'            => ['required', 'integer', 'min:1', 'max:1000'],
             'franja_horaria'           => ['required', Rule::in(['manana', 'tarde', 'noche'])],
@@ -29,9 +30,9 @@ class CuestionarioInicialRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'iglesia.required_if'  => 'Si la ceremonia es en iglesia, debes indicar cual.',
-            'fecha_boda.after'     => 'La fecha de la boda debe ser posterior a hoy.',
-            'num_invitados.min'    => 'Debe haber al menos 1 invitado.',
+            'nombre_pareja.required' => 'Indica los nombres de la pareja.',
+            'fecha_boda.after'       => 'La fecha de la boda debe ser posterior a hoy.',
+            'num_invitados.min'      => 'Debe haber al menos 1 invitado.',
         ];
     }
 }

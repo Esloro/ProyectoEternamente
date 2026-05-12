@@ -7,7 +7,7 @@ import { Invitado, RespuestaApi } from '../modelos';
 export interface DatosInvitado {
   nombre: string;
   alergias?: string | null;
-  acompanante?: boolean;
+  num_acompanantes?: number;
   mesa_id?: number | null;
 }
 

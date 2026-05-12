@@ -12,7 +12,7 @@
       <div class="grid-portfolio">
         @for (entrada of entradas(); track entrada.id) {
           <article class="item" (click)="abrirModal(entrada)">
-            <img [src]="entrada.foto" [alt]="entrada.titulo" loading="lazy">
+            <img [src]="entrada.foto" [alt]="entrada.titulo" loading="lazy" decoding="async" fetchpriority="low">
             <div class="overlay">
               <h3>{{ entrada.titulo }}</h3>
               @if (entrada.descripcion) {

@@ -16,13 +16,22 @@ class Invitado extends Model
         'boda_id',
         'nombre',
         'alergias',
-        'acompanante',
+        'num_acompanantes',
         'mesa_id',
     ];
 
     protected $casts = [
-        'acompanante' => 'boolean',
+        'num_acompanantes' => 'integer',
     ];
+
+    /**
+     * Plazas que ocupa el invitado en una mesa: el propio invitado mas sus
+     * acompañantes.
+     */
+    public function plazasQueOcupa(): int
+    {
+        return 1 + (int) $this->num_acompanantes;
+    }
 
     public function boda(): BelongsTo
     {

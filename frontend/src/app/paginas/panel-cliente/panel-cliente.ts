@@ -3,7 +3,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 
 import { AutenticacionService } from '../../servicios/autenticacion.service';
 import { BodaService } from '../../servicios/boda.service';
-import { Boda, ETIQUETAS_ESTADO } from '../../modelos';
+import { ETIQUETAS_ESTADO } from '../../modelos';
 
 @Component({
   selector: 'app-panel-cliente',
@@ -17,10 +17,21 @@ export class PanelCliente implements OnInit {
   private bodaService = inject(BodaService);
   private router = inject(Router);
 
-  protected boda = signal<Boda | null>(null);
-  protected cuentaAtras = signal<number | null>(null);
+  protected boda = this.bodaService.bodaActual;
   protected menuMovilAbierto = signal(false);
   protected reenvioEnviado = signal(false);
+
+  protected cuentaAtras = computed<number | null>(() => {
+    const fecha = this.boda()?.fecha_boda;
+    if (!fecha) return null;
+    const objetivo = new Date(fecha);
+    if (Number.isNaN(objetivo.getTime())) return null;
+    objetivo.setHours(0, 0, 0, 0);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const dias = Math.round((objetivo.getTime() - hoy.getTime()) / 86_400_000);
+    return Math.max(0, dias);
+  });
 
   protected bodaActiva = computed(() => this.boda()?.estado === 'activa');
   protected emailSinVerificar = computed(() => !this.auth.emailVerificado());
@@ -30,12 +41,7 @@ export class PanelCliente implements OnInit {
   });
 
   ngOnInit(): void {
-    this.bodaService.miBoda().subscribe({
-      next: (r) => {
-        this.boda.set(r.data.boda);
-        this.cuentaAtras.set(r.data.cuenta_atras_dias ?? null);
-      },
-    });
+    this.bodaService.miBoda().subscribe();
   }
 
   protected reenviarVerificacion(): void {

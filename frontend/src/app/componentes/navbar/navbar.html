@@ -1,12 +1,49 @@
 <nav class="navbar" [class.scrolleado]="scrolleado()" [class.menu-abierto]="menuAbierto()">
   <div class="contenedor navbar-interior">
-
     <!-- Logo -->
-    <a class="logo" routerLink="/" (click)="cerrarMenuMovil()">
-      <span class="logo-marca">Wedding</span>
-      <span class="logo-marca-acento">Planner</span>
-    </a>
+    <a
+      class="logo"
+      routerLink="/"
+      (click)="cerrarMenuMovil()"
+      aria-label="Eternamente, Wedding Planner"
+    >
+      <!--<span class="logo-divisor" aria-hidden="true"></span> -->
 
+      <div class="logo-texto">
+        <span class="logo-marca">
+          <span class="logo-marca-inicial">
+            <svg
+              class="rama"
+              viewBox="0 0 28 44"
+              fill="none"
+              aria-hidden="true"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <path
+                d="M5 42 Q9 30 13 19 Q16 11 19 4"
+                stroke="currentColor"
+                stroke-width="0.7"
+                fill="none"
+                stroke-linecap="round"
+              />
+              <path d="M7.5 35 Q3 33 5 30 Q9.5 30.5 7.5 35Z" fill="currentColor" />
+              <path d="M10 27 Q5.5 25 7.5 22 Q12 22.5 10 27Z" fill="currentColor" />
+              <path d="M13 19 Q8.5 17 10.5 14 Q15 14.5 13 19Z" fill="currentColor" />
+              <path d="M11 31.5 Q15.5 31 14.5 27.5 Q10 27.5 11 31.5Z" fill="currentColor" />
+              <path d="M14 23.5 Q18.5 23 17.5 19.5 Q13 19.5 14 23.5Z" fill="currentColor" />
+              <path d="M17 14.5 Q21.5 14 20.5 10.5 Q16 10.5 17 14.5Z" fill="currentColor" />
+            </svg>
+            <span class="logo-monograma" aria-hidden="true">E</span> </span
+          >ternamente
+        </span>
+        <span class="logo-marca-secundaria">
+          <span class="dash" aria-hidden="true"></span>
+          <span class="texto">Wedding Planner</span>
+          <span class="dash" aria-hidden="true"></span>
+        </span>
+      </div>
+      <!--<span class="logo-divisor" aria-hidden="true"></span> -->
+    </a>
     <!-- Boton hamburguesa (movil) -->
     <button class="hamburguesa" (click)="alternarMenu()" aria-label="Abrir menú">
       <span></span><span></span><span></span>
@@ -25,7 +62,9 @@
       <div class="acciones">
         @if (!estaLogueado()) {
           <a routerLink="/login" class="enlace-login" (click)="cerrarMenuMovil()">Iniciar sesión</a>
-          <a routerLink="/registro" class="boton-primario" (click)="cerrarMenuMovil()">Registrarse</a>
+          <a routerLink="/registro" class="boton-primario" (click)="cerrarMenuMovil()"
+            >Registrarse</a
+          >
         } @else {
           <span class="saludo">Hola, {{ nombreUsuario() }}</span>
           <button class="boton-secundario" (click)="irAPanel()">Mi panel</button>
@@ -33,6 +72,5 @@
         }
       </div>
     </div>
-
   </div>
 </nav>

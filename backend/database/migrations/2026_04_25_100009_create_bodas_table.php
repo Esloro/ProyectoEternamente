@@ -12,8 +12,22 @@ return new class extends Migration {
             $tabla->foreignId('usuario_id')->constrained('usuarios')->cascadeOnDelete();
 
             // Datos del cuestionario inicial
-            $tabla->enum('tipo_ceremonia', ['civil', 'iglesia', 'aire_libre', 'otra']);
-            $tabla->string('iglesia', 200)->nullable();
+            $tabla->string('nombre_pareja', 150)->nullable();
+            $tabla->enum('tipo_ceremonia', [
+                'religiosa',
+                'civil_ayuntamiento',
+                'simbolica',
+                'renovacion_votos',
+            ]);
+            $tabla->enum('lugar_celebracion', [
+                'iglesia',
+                'ayuntamiento',
+                'finca',
+                'playa',
+                'jardin',
+                'restaurante',
+                'otro',
+            ]);
             $tabla->date('fecha_boda');
             $tabla->unsignedInteger('num_invitados');
 

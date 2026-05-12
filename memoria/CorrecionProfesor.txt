@@ -1,0 +1,9 @@
+En esta segunda entrega se nota bastante evolución respecto a la anterior: has ampliado bien el índice, has incorporado metodología, planificación y partes más cercanas al desarrollo real del proyecto, y en general ya se ve una visión más completa del producto.
+
+La parte de Scrum, cronograma y presupuesto está bien planteada y aporta contexto profesional, lo cual suma bastante. Aun así, ahora toca empezar a bajar más a lo técnico de verdad: echo en falta ya un modelo de base de datos (aunque sea inicial), y sobre todo algo de lógica de navegación más detallada (por ejemplo, qué pasa exactamente cuando un usuario se registra, inicia sesión, gestiona invitados, etc.), que demuestre que el flujo está bien cerrado y sin puntos muertos.
+
+De cara a mejorar, te recomendaría añadir diagramas sencillos: uno de arquitectura (frontend–backend–BBDD–Docker) y otro de flujo de usuario (registro/login → panel → configurador → gestión de invitados, etc.). También podrías empezar a documentar endpoints o al menos describir llamadas clave de la API. En el apartado de desarrollo, la estructura está bien definida, pero sería interesante incluir ejemplos concretos o pequeños fragmentos que ayuden a entender cómo se está implementando realmente.
+
+A nivel de presentación, el diseño está bastante cuidado, sobre todo en el prototipo de Figma, que encaja bien con la idea del producto (se ve en las capturas finales).
+
+De cara a siguientes entregas, sería buen momento para empezar también el manual de uso con capturas explicadas y seguir reforzando esa parte más “producto real” que ya estás empezando a construir.

@@ -130,13 +130,16 @@
 
 .proveedor-foto {
   width: 100%;
-  height: 160px;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
+  object-position: center 35%;
+  display: block;
+  background: var(--color-fondo);
 }
 
 .proveedor-foto-placeholder {
   width: 100%;
-  height: 160px;
+  aspect-ratio: 4 / 3;
   background: var(--color-fondo);
   display: flex;
   align-items: center;

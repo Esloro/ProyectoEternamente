@@ -41,7 +41,7 @@ export class Presupuesto implements OnInit {
 
   protected solicitarPresupuesto(): void {
     if (this.solicitando() || this.solicitudEnviada()) return;
-    if (!confirm('¿Confirmas que quieres solicitar el presupuesto definitivo al equipo de WeddingPlanner?')) return;
+    if (!confirm('¿Confirmas que quieres solicitar el presupuesto definitivo al equipo de Eternamente?')) return;
     this.solicitando.set(true);
     this.bodaService.solicitarPresupuestoDefinitivo().subscribe({
       next: () => {

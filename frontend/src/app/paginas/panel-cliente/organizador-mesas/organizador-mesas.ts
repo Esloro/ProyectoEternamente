@@ -46,7 +46,7 @@ export class OrganizadorMesas implements OnInit {
   protected formInvitado = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     alergias: [''],
-    acompanante: [false],
+    num_acompanantes: [0, [Validators.required, Validators.min(0), Validators.max(20)]],
   });
 
   ngOnInit(): void {
@@ -145,10 +145,10 @@ export class OrganizadorMesas implements OnInit {
       this.formInvitado.setValue({
         nombre: invitado.nombre,
         alergias: invitado.alergias ?? '',
-        acompanante: invitado.acompanante,
+        num_acompanantes: invitado.num_acompanantes ?? 0,
       });
     } else {
-      this.formInvitado.reset({ acompanante: false });
+      this.formInvitado.reset({ nombre: '', alergias: '', num_acompanantes: 0 });
     }
     this.modalInvitado.set(true);
   }
@@ -156,7 +156,7 @@ export class OrganizadorMesas implements OnInit {
   protected cerrarModalInvitado(): void {
     this.modalInvitado.set(false);
     this.editandoInvitado.set(null);
-    this.formInvitado.reset({ acompanante: false });
+    this.formInvitado.reset({ nombre: '', alergias: '', num_acompanantes: 0 });
   }
 
   protected guardarInvitado(): void {
@@ -185,7 +185,21 @@ export class OrganizadorMesas implements OnInit {
 
   protected readonly Math = Math;
 
+  /**
+   * Total de personas (invitado + sus acompañantes), sumando todas las
+   * mesas y los invitados sin mesa asignada.
+   */
   protected totalInvitados(): number {
-    return this.sinMesa().length + this.mesas().reduce((s, m) => s + m.invitadosLista.length, 0);
+    const personas = (lista: Invitado[]) =>
+      lista.reduce((s, i) => s + 1 + (i.num_acompanantes ?? 0), 0);
+    return personas(this.sinMesa()) + this.mesas().reduce((s, m) => s + personas(m.invitadosLista), 0);
+  }
+
+  /**
+   * Personas ocupando plazas en una mesa concreta (cada invitado cuenta
+   * como 1 + sus acompañantes).
+   */
+  protected ocupacionMesa(mesa: MesaConInvitados): number {
+    return mesa.invitadosLista.reduce((s, i) => s + 1 + (i.num_acompanantes ?? 0), 0);
   }
 }

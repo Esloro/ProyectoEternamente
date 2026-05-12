@@ -1,11 +1,13 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AutenticacionService } from '../../../servicios/autenticacion.service';
 import { BodaService } from '../../../servicios/boda.service';
 import {
   DatosCuestionarioInicial,
   FranjaHoraria,
+  LugarCelebracion,
   TipoCeremonia,
   TipoComida,
   Tematica,
@@ -22,15 +24,21 @@ import {
 export class CuestionarioInicial implements OnInit {
   private fb = inject(FormBuilder);
   private bodaService = inject(BodaService);
+  private auth = inject(AutenticacionService);
   private router = inject(Router);
 
   protected enviando = signal(false);
   protected error = signal('');
   protected pasoActual = signal(1);
+  protected reenvioEnviado = signal(false);
+  protected reenviando = signal(false);
+
+  protected emailVerificado = computed(() => this.auth.emailVerificado());
 
   protected form = this.fb.group({
-    tipo_ceremonia: ['civil' as TipoCeremonia, Validators.required],
-    iglesia: [''],
+    nombre_pareja: ['', [Validators.required, Validators.maxLength(150)]],
+    tipo_ceremonia: ['religiosa' as TipoCeremonia, Validators.required],
+    lugar_celebracion: ['iglesia' as LugarCelebracion, Validators.required],
     fecha_boda: ['', Validators.required],
     num_invitados: [50, [Validators.required, Validators.min(1), Validators.max(2000)]],
     franja_horaria: ['tarde' as FranjaHoraria, Validators.required],
@@ -40,10 +48,20 @@ export class CuestionarioInicial implements OnInit {
   });
 
   protected readonly tiposCeremonia: { valor: TipoCeremonia; etiqueta: string }[] = [
-    { valor: 'civil', etiqueta: 'Civil' },
+    { valor: 'religiosa', etiqueta: 'Religiosa' },
+    { valor: 'civil_ayuntamiento', etiqueta: 'Civil ayuntamiento/juzgado' },
+    { valor: 'simbolica', etiqueta: 'Ceremonia simbólica' },
+    { valor: 'renovacion_votos', etiqueta: 'Renovación de votos' },
+  ];
+
+  protected readonly lugaresCelebracion: { valor: LugarCelebracion; etiqueta: string }[] = [
     { valor: 'iglesia', etiqueta: 'Iglesia' },
-    { valor: 'aire_libre', etiqueta: 'Al aire libre' },
-    { valor: 'otra', etiqueta: 'Otra' },
+    { valor: 'ayuntamiento', etiqueta: 'Ayuntamiento/juzgado' },
+    { valor: 'finca', etiqueta: 'Finca o hacienda' },
+    { valor: 'playa', etiqueta: 'Playa' },
+    { valor: 'jardin', etiqueta: 'Jardín/Mirador' },
+    { valor: 'restaurante', etiqueta: 'Restaurante' },
+    { valor: 'otro', etiqueta: 'Otro' },
   ];
 
   protected readonly franjas: { valor: FranjaHoraria; etiqueta: string }[] = [
@@ -78,15 +96,7 @@ export class CuestionarioInicial implements OnInit {
   protected readonly totalPasos = 4;
   protected readonly Math = Math;
 
-  protected get iglesiaNecesaria(): boolean {
-    return this.form.get('tipo_ceremonia')?.value === 'iglesia';
-  }
-
-  ngOnInit(): void {
-    this.form.get('tipo_ceremonia')?.valueChanges.subscribe((val) => {
-      if (val !== 'iglesia') this.form.get('iglesia')?.setValue('');
-    });
-  }
+  ngOnInit(): void {}
 
   protected siguientePaso(): void {
     if (this.pasoActual() < this.totalPasos) this.pasoActual.update((p) => p + 1);
@@ -97,7 +107,7 @@ export class CuestionarioInicial implements OnInit {
   }
 
   protected enviar(): void {
-    if (this.form.invalid || this.enviando()) return;
+    if (this.form.invalid || this.enviando() || !this.emailVerificado()) return;
     this.enviando.set(true);
     this.error.set('');
 
@@ -109,6 +119,18 @@ export class CuestionarioInicial implements OnInit {
         this.error.set(e?.error?.message ?? 'Ha ocurrido un error. Inténtalo de nuevo.');
         this.enviando.set(false);
       },
+    });
+  }
+
+  protected reenviarVerificacion(): void {
+    if (this.reenviando()) return;
+    this.reenviando.set(true);
+    this.auth.reenviarVerificacion().subscribe({
+      next: () => {
+        this.reenvioEnviado.set(true);
+        this.reenviando.set(false);
+      },
+      error: () => this.reenviando.set(false),
     });
   }
 }

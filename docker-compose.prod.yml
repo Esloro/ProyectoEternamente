@@ -1,0 +1,96 @@
+# =====================================================================
+# Wedding Planner - PRODUCCION (DigitalOcean Droplet)
+# ---------------------------------------------------------------------
+# Servicios:
+#   - caddy    -> reverse proxy con HTTPS automatico (Let's Encrypt)
+#                 expone 80/443 al exterior
+#   - backend  -> Laravel 11 (php artisan serve detras de Caddy)
+#   - mysql    -> base de datos (sin puerto expuesto al exterior)
+#
+# Diferencias con docker-compose.yml (desarrollo):
+#   - No hay frontend (Angular se sirve desde Vercel).
+#   - No hay phpmyadmin ni mailhog.
+#   - MySQL no publica puerto al host (solo accesible desde la red interna).
+#   - El backend usa start-prod.sh: migraciones + caches + serve.
+#   - El backend lee variables de ./backend/.env (no las inyecta compose).
+#
+# Uso en el servidor:
+#   docker compose -f docker-compose.prod.yml up -d --build
+# =====================================================================
+
+services:
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: wp_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+    networks:
+      - wp_red
+
+  backend:
+    build:
+      context: ./backend
+    container_name: wp_backend
+    restart: unless-stopped
+    expose:
+      - "8000"
+    # env_file carga las variables al entorno del contenedor (lo usa start-prod.sh
+    # para leer $DB_HOST, etc. desde bash). El volumen siguiente monta el mismo
+    # archivo dentro del contenedor para que Laravel pueda leerlo Y para que
+    # `php artisan key:generate` pueda escribir la APP_KEY al disco.
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Persistimos storage/ (logs, archivos subidos, sesiones de fichero, etc.)
+      - backend_storage:/var/www/html/storage
+      # Montamos .env en modo lectura-escritura (rw) para key:generate.
+      - ./backend/.env:/var/www/html/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: ["sh", "/var/www/html/start-prod.sh"]
+    networks:
+      - wp_red
+
+  mysql:
+    image: mysql:8.0
+    container_name: wp_mysql
+    restart: unless-stopped
+    # No exponemos el puerto al host: solo accesible desde la red wp_red.
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - wp_red
+
+volumes:
+  mysql_datos:
+    driver: local
+  backend_storage:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+
+networks:
+  wp_red:
+    driver: bridge

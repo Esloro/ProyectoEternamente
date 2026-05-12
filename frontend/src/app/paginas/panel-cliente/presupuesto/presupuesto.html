@@ -16,7 +16,7 @@
           <div class="total-item definitivo">
             <span class="total-etiqueta">Presupuesto definitivo</span>
             <span class="total-valor">{{ boda()!.presupuesto_definitivo | number:'1.2-2' }} €</span>
-            <span class="total-desc">Cerrado con WeddingPlanner</span>
+            <span class="total-desc">Cerrado con Eternamente</span>
           </div>
         } @else {
           <div class="total-item estimado">
@@ -31,7 +31,7 @@
         <div class="solicitar-bloque">
           @if (solicitudEnviada()) {
             <div class="auth-alerta exito">
-              ¡Solicitud enviada! El equipo de WeddingPlanner revisará los detalles y te enviaremos el presupuesto definitivo en breve.
+              ¡Solicitud enviada! El equipo de Eternamente revisará los detalles y te enviaremos el presupuesto definitivo en breve.
             </div>
           } @else {
             <p>¿Listo para cerrar el presupuesto? Solicítanos un presupuesto definitivo y te lo enviaremos en 24-48 horas.</p>
