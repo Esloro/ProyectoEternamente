@@ -32,6 +32,9 @@ fi
 echo ">> Ejecutando migraciones..."
 php artisan migrate --force
 
+echo ">> Asegurando symlink public/storage..."
+php artisan storage:link --force
+
 echo ">> Cacheando configuracion..."
 php artisan config:cache
 php artisan route:cache

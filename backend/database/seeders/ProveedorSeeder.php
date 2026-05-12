@@ -16,7 +16,8 @@ class ProveedorSeeder extends Seeder
 
         // Las fotos viven en backend/storage/app/public/bodas/ y se sirven con
         // `php artisan storage:link`.
-        $base = 'http://localhost:8000/storage/bodas';
+        // asset() prefija con APP_URL para que funcione en local y en prod.
+        $base = asset('storage/bodas');
 
         // Proveedores reales o realistas de la provincia de Malaga (Rincon de la
         // Victoria, Velez-Malaga, Axarquia y Malaga capital). Los precios son

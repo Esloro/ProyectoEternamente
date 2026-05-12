@@ -15,7 +15,8 @@ class TestimonioSeeder extends Seeder
         // Las fotos viven en backend/storage/app/public/bodas/. Para que sean
         // accesibles desde el frontend hay que ejecutar `php artisan storage:link`
         // (genera el symlink public/storage -> storage/app/public).
-        $base = 'http://localhost:8000/storage/bodas';
+        // asset() prefija con APP_URL, asi funciona tanto en local como en prod.
+        $base = asset('storage/bodas');
 
         $testimonios = [
             [
