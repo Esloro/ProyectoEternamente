@@ -9,9 +9,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        env('FRONTEND_URL', 'http://localhost:4200'),
-    ],
+    // FRONTEND_URL puede ser una sola URL o una lista separada por comas
+    // (ej: "https://eternamente.tech,https://www.eternamente.tech").
+    // Filtramos vacios por si la env queda sin definir.
+    'allowed_origins' => array_filter(
+        array_map('trim', explode(',', env('FRONTEND_URL', 'http://localhost:4200')))
+    ),
 
     'allowed_origins_patterns' => [],
 
