@@ -1,4 +1,4 @@
-*
+*.key
 !private/
 !public/
 !.gitignore
