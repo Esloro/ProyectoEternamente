@@ -9,12 +9,13 @@ return [
 
     'allowed_methods' => ['*'],
 
-    // FRONTEND_URL puede ser una sola URL o una lista separada por comas
-    // (ej: "https://eternamente.tech,https://www.eternamente.tech").
-    // Filtramos vacios por si la env queda sin definir.
-    'allowed_origins' => array_filter(
-        array_map('trim', explode(',', env('FRONTEND_URL', 'http://localhost:4200')))
-    ),
+    // Origenes permitidos (hardcodeados para evitar lios con el caching de config).
+    // En dev se permite localhost:4200, en prod los dos dominios de Vercel.
+    'allowed_origins' => [
+        'http://localhost:4200',
+        'https://eternamente.tech',
+        'https://www.eternamente.tech',
+    ],
 
     'allowed_origins_patterns' => [],
 
