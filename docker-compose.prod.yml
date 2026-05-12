@@ -43,11 +43,17 @@ services:
     restart: unless-stopped
     expose:
       - "8000"
+    # env_file carga las variables al entorno del contenedor (lo usa start-prod.sh
+    # para leer $DB_HOST, etc. desde bash). El volumen siguiente monta el mismo
+    # archivo dentro del contenedor para que Laravel pueda leerlo Y para que
+    # `php artisan key:generate` pueda escribir la APP_KEY al disco.
     env_file:
       - ./backend/.env
     volumes:
       # Persistimos storage/ (logs, archivos subidos, sesiones de fichero, etc.)
       - backend_storage:/var/www/html/storage
+      # Montamos .env en modo lectura-escritura (rw) para key:generate.
+      - ./backend/.env:/var/www/html/.env
     depends_on:
       mysql:
         condition: service_healthy
