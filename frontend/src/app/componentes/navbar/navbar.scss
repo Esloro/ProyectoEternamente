@@ -339,7 +339,18 @@
 }
 
 @media (max-width: 480px) {
-  /* En pantallas muy pequeñas ocultamos divisor y monograma para no romper layout */
-  .logo-divisor,
-  .logo-monograma { display: none; }
+  /* En pantallas muy pequeñas ocultamos el divisor (decorativo) pero la
+     "E" del monograma debe seguir visible porque es la inicial del logo
+     ("E" + "ternamente"). Solo la reducimos. */
+  .logo-divisor { display: none; }
+
+  .logo { gap: 0.45rem; }
+  .logo-marca { font-size: 1.35rem; }
+  .logo-monograma { font-size: 1.7rem; }
+
+  .logo-marca-inicial .rama {
+    width: 0.85em;
+    height: 1.25em;
+    left: -0.35em;
+  }
 }
