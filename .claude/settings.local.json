@@ -63,7 +63,9 @@
       "Bash(npm install *)",
       "Bash(npx playwright *)",
       "Bash(node *)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "Bash(ls frontend/public)",
+      "Bash(ls frontend/src/assets)"
     ]
   }
 }

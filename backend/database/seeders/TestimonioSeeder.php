@@ -12,11 +12,10 @@ class TestimonioSeeder extends Seeder
         // IDEMPOTENTE: no borra testimonios existentes. Usa firstOrCreate por
         // nombre_cliente para no pisar los que el admin haya creado a mano.
         //
-        // Las fotos viven en backend/storage/app/public/bodas/. Para que sean
-        // accesibles desde el frontend hay que ejecutar `php artisan storage:link`
-        // (genera el symlink public/storage -> storage/app/public).
-        // asset() prefija con APP_URL, asi funciona tanto en local como en prod.
-        $base = asset('storage/bodas');
+        // Las fotos viven en frontend/public/bodas/ y las sirve Vercel. Guardamos
+        // rutas relativas para que el <img src> las resuelva contra el dominio
+        // del frontend, sin depender de APP_URL del backend.
+        $base = '/bodas';
 
         $testimonios = [
             [
