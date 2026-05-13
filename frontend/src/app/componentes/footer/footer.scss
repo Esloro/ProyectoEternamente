@@ -130,4 +130,10 @@
   .redes {
     justify-content: center;
   }
+
+  /* El logo de la marca por defecto se alinea a la izquierda; lo centramos
+     para que combine con el resto de columnas en mobile. */
+  .marca .logo {
+    align-items: center;
+  }
 }

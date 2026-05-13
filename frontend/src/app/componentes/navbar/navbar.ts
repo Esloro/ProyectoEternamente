@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AutenticacionService } from '../../servicios/autenticacion.service';
 
@@ -13,8 +13,13 @@ export class Navbar {
   private auth = inject(AutenticacionService);
   private router = inject(Router);
 
+  // Cuando se usa la navbar fuera de la landing (paginas sin hero), forzamos
+  // el modo opaco para que el texto sea legible sobre fondo claro.
+  siempreOpaca = input(false);
+
   // Signal que cambia segun la posicion de scroll para aplicar fondo solido.
-  protected scrolleado = signal(false);
+  private scrolleadoInterno = signal(false);
+  protected scrolleado = computed(() => this.siempreOpaca() || this.scrolleadoInterno());
   protected menuAbierto = signal(false);
 
   protected estaLogueado = this.auth.estaLogueado;
@@ -32,7 +37,7 @@ export class Navbar {
 
   @HostListener('window:scroll')
   alHacerScroll(): void {
-    this.scrolleado.set(window.scrollY > 60);
+    this.scrolleadoInterno.set(window.scrollY > 60);
   }
 
   irAPanel(): void {
