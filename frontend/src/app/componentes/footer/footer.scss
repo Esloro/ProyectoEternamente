@@ -105,6 +105,15 @@
   font-style: italic;
 }
 
+.enlace-legal {
+  color: #C9C9C9;
+  transition: color var(--transicion-rapida);
+
+  &:hover {
+    color: var(--color-dorado);
+  }
+}
+
 @media (max-width: 800px) {
   .grid-footer {
     grid-template-columns: 1fr 1fr;

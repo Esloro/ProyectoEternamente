@@ -9,6 +9,15 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/landing/landing').then((m) => m.Landing),
   },
 
+  // Términos y condiciones
+  {
+    path: 'terminos-condiciones',
+    loadComponent: () =>
+      import('./paginas/terminos-condiciones/terminos-condiciones').then(
+        (m) => m.TerminosCondiciones,
+      ),
+  },
+
   // Autenticación
   {
     path: 'login',

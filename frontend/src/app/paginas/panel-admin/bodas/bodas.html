@@ -35,7 +35,7 @@
         <table class="tabla">
           <thead>
             <tr>
-              <th>#</th>
+              <th>Pareja</th>
               <th>Fecha boda</th>
               <th>Invitados</th>
               <th>Estado</th>
@@ -46,7 +46,7 @@
           <tbody>
             @for (boda of bodas(); track boda.id) {
               <tr>
-                <td class="id-col">{{ boda.id }}</td>
+                <td class="pareja-col">{{ boda.nombre_pareja || '— sin nombre —' }}</td>
                 <td>{{ boda.fecha_boda | date:'dd/MM/yyyy' }}</td>
                 <td>{{ boda.num_invitados }}</td>
                 <td><span class="etiqueta-estado {{ boda.estado }}">{{ etiquetasEstado[boda.estado] }}</span></td>

@@ -35,6 +35,11 @@
 
       <!-- Columna derecha: formulario -->
       <form class="formulario" [formGroup]="formulario" (ngSubmit)="enviar()" novalidate>
+        <header class="formulario-cabecera">
+          <h3>Escríbenos</h3>
+          <p>Rellena el formulario y te responderemos en menos de 48 horas.</p>
+        </header>
+
         <div class="campo">
           <label for="nombre">Nombre *</label>
           <input
