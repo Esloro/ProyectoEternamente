@@ -16,6 +16,9 @@ export class Clientes implements OnInit {
 
   protected clientes = signal<Usuario[]>([]);
   protected cargando = signal(true);
+  protected clienteAEliminar = signal<Usuario | null>(null);
+  protected eliminando = signal(false);
+  protected errorEliminacion = signal('');
 
   ngOnInit(): void {
     this.cargar();
@@ -39,6 +42,36 @@ export class Clientes implements OnInit {
         this.clientes.update(lista =>
           lista.map(c => c.id === usuario.id ? { ...c, email_verificado_en: r.data.cliente.email_verificado_en } : c)
         );
+      },
+    });
+  }
+
+  protected abrirConfirmacionEliminar(usuario: Usuario): void {
+    this.errorEliminacion.set('');
+    this.clienteAEliminar.set(usuario);
+  }
+
+  protected cancelarEliminar(): void {
+    if (this.eliminando()) return;
+    this.clienteAEliminar.set(null);
+  }
+
+  protected confirmarEliminar(): void {
+    const cliente = this.clienteAEliminar();
+    if (!cliente || this.eliminando()) return;
+
+    this.eliminando.set(true);
+    this.errorEliminacion.set('');
+
+    this.adminService.eliminarCliente(cliente.id).subscribe({
+      next: () => {
+        this.clientes.update(lista => lista.filter(c => c.id !== cliente.id));
+        this.eliminando.set(false);
+        this.clienteAEliminar.set(null);
+      },
+      error: (e) => {
+        this.eliminando.set(false);
+        this.errorEliminacion.set(e?.error?.message ?? 'No se ha podido eliminar el cliente.');
       },
     });
   }

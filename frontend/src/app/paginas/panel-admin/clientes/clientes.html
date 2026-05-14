@@ -26,6 +26,7 @@
               <th>Teléfono</th>
               <th>Email verificado</th>
               <th>Registro</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +46,11 @@
                   }
                 </td>
                 <td>{{ c.created_at | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <button class="btn-eliminar" (click)="abrirConfirmacionEliminar(c)" title="Eliminar cliente">
+                    Eliminar
+                  </button>
+                </td>
               </tr>
             }
           </tbody>
@@ -53,3 +59,29 @@
     }
   }
 </div>
+
+@if (clienteAEliminar(); as cliente) {
+  <div class="modal-fondo" (click)="cancelarEliminar()">
+    <div class="modal-tarjeta" (click)="$event.stopPropagation()">
+      <h3>Eliminar cliente</h3>
+      <p>
+        Vas a eliminar a <strong>{{ cliente.nombre }} {{ cliente.apellidos }}</strong>
+        ({{ cliente.email }}). Sus datos personales serán anonimizados y no podrá volver a iniciar sesión.
+        La información asociada a su boda (proveedores, mesas, invitados, mensajes...) se conservará.
+      </p>
+
+      @if (errorEliminacion()) {
+        <div class="auth-alerta error">{{ errorEliminacion() }}</div>
+      }
+
+      <div class="modal-acciones">
+        <button class="boton-secundario" (click)="cancelarEliminar()" [disabled]="eliminando()">
+          Cancelar
+        </button>
+        <button class="btn-eliminar grande" (click)="confirmarEliminar()" [disabled]="eliminando()">
+          {{ eliminando() ? 'Eliminando…' : 'Eliminar definitivamente' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

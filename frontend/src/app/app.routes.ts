@@ -37,6 +37,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./paginas/email-verificado/email-verificado').then((m) => m.EmailVerificado),
   },
+  {
+    path: 'cuenta-eliminada',
+    loadComponent: () =>
+      import('./paginas/cuenta-eliminada/cuenta-eliminada').then((m) => m.CuentaEliminada),
+  },
 
   // Panel cliente (lazy children)
   {

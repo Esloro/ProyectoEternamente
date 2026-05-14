@@ -1,7 +1,8 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AutenticacionService } from '../../../servicios/autenticacion.service';
+import { BodaService } from '../../../servicios/boda.service';
 import { UsuarioService } from '../../../servicios/usuario.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { UsuarioService } from '../../../servicios/usuario.service';
 })
 export class MiPerfil implements OnInit {
   protected auth = inject(AutenticacionService);
+  protected bodaService = inject(BodaService);
   private usuarioService = inject(UsuarioService);
   private fb = inject(FormBuilder);
 
@@ -22,6 +24,20 @@ export class MiPerfil implements OnInit {
   protected exitoPassword = signal('');
   protected errorPerfil = signal('');
   protected errorPassword = signal('');
+
+  // Eliminacion de cuenta
+  protected modalEliminarAbierto = signal(false);
+  protected aceptaCondiciones = signal(false);
+  protected enviandoEliminacion = signal(false);
+  protected exitoEliminacion = signal('');
+  protected errorEliminacion = signal('');
+
+  // Bloqueamos la auto-eliminacion si la boda esta activa o finalizada:
+  // en esos casos el usuario tiene que contactar con el administrador.
+  protected bodaBloqueaEliminacion = computed(() => {
+    const estado = this.bodaService.bodaActual()?.estado;
+    return estado === 'activa' || estado === 'finalizada';
+  });
 
   protected formPerfil = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
@@ -53,6 +69,8 @@ export class MiPerfil implements OnInit {
         telefono: u.telefono ?? '',
       });
     }
+    // Refrescamos la boda actual para que `bodaBloqueaEliminacion` este al dia.
+    this.bodaService.miBoda().subscribe();
   }
 
   protected guardarPerfil(): void {
@@ -96,6 +114,39 @@ export class MiPerfil implements OnInit {
       error: (e) => {
         this.errorPassword.set(e?.error?.message ?? 'Error al cambiar la contraseña.');
         this.guardandoPassword.set(false);
+      },
+    });
+  }
+
+  protected abrirModalEliminar(): void {
+    this.aceptaCondiciones.set(false);
+    this.errorEliminacion.set('');
+    this.exitoEliminacion.set('');
+    this.modalEliminarAbierto.set(true);
+  }
+
+  protected cerrarModalEliminar(): void {
+    if (this.enviandoEliminacion()) return;
+    this.modalEliminarAbierto.set(false);
+  }
+
+  protected confirmarSolicitudEliminacion(): void {
+    if (!this.aceptaCondiciones() || this.enviandoEliminacion()) return;
+    this.enviandoEliminacion.set(true);
+    this.errorEliminacion.set('');
+
+    this.auth.solicitarEliminacionCuenta().subscribe({
+      next: () => {
+        this.enviandoEliminacion.set(false);
+        this.exitoEliminacion.set(
+          'Te hemos enviado un email para confirmar la eliminación. Revisa tu bandeja de entrada.',
+        );
+      },
+      error: (e) => {
+        this.enviandoEliminacion.set(false);
+        this.errorEliminacion.set(
+          e?.error?.message ?? 'No hemos podido enviar el email. Inténtalo más tarde.',
+        );
       },
     });
   }

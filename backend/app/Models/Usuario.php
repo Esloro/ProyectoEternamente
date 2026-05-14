@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class Usuario extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'usuarios';
 
@@ -88,5 +89,28 @@ class Usuario extends Authenticatable implements MustVerifyEmail
     public function esCliente(): bool
     {
         return $this->rol === 'cliente';
+    }
+
+    /**
+     * Anonimiza los datos personales del usuario y lo marca como eliminado.
+     * No borra fisicamente la fila para conservar el historico (bodas,
+     * mensajes, etc.) ligado a un id consistente. Tras llamar a este
+     * metodo el usuario ya no puede iniciar sesion.
+     */
+    public function anonimizarYEliminar(): void
+    {
+        $this->tokens()->delete();
+
+        $this->forceFill([
+            'nombre'              => 'Usuario',
+            'apellidos'           => 'eliminado',
+            'email'               => 'deleted_' . $this->id . '@eliminado.local',
+            'telefono'            => null,
+            'password'            => bcrypt(\Illuminate\Support\Str::random(40)),
+            'email_verificado_en' => null,
+            'remember_token'      => null,
+        ])->save();
+
+        $this->delete();
     }
 }

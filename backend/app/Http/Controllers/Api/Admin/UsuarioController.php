@@ -54,4 +54,23 @@ class UsuarioController extends Controller
 
         return $this->ok(['cliente' => $cliente], 'Email marcado como verificado.');
     }
+
+    /**
+     * El admin elimina (anonimiza + soft delete) un cliente. A diferencia
+     * de la auto-eliminacion, aqui no hay restricciones por estado de
+     * boda: el admin puede borrar incluso clientes con boda activa, por
+     * ejemplo cuando el cliente se lo solicita explicitamente.
+     */
+    public function destroy(int $id)
+    {
+        $cliente = Usuario::findOrFail($id);
+
+        if ($cliente->esAdministrador()) {
+            return $this->ko('No se puede eliminar a un administrador desde este endpoint.', 403);
+        }
+
+        $cliente->anonimizarYEliminar();
+
+        return $this->ok(null, 'Cliente eliminado correctamente. Los datos asociados a su boda se conservan.');
+    }
 }

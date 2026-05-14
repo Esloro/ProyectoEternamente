@@ -75,12 +75,33 @@ export class AutenticacionService {
   }
 
   /**
+   * Solicita la eliminacion de la cuenta del usuario logueado. Si pasa
+   * las validaciones del backend, le llegara un email con el enlace
+   * firmado para confirmar definitivamente.
+   */
+  solicitarEliminacionCuenta(): Observable<RespuestaApi<null>> {
+    return this.http.post<RespuestaApi<null>>(
+      `${environment.apiUrl}/auth/solicitar-eliminar-cuenta`,
+      {},
+    );
+  }
+
+  /**
    * Cierre de sesion por la fuerza (sin llamar al backend).
    * Lo usa el interceptor cuando recibe un 401.
    */
   forzarCierreLocal(): void {
     this.limpiarSesion();
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Variante que limpia la sesion local pero NO redirige. Util en
+   * paginas finales (ej. /cuenta-eliminada) que quieren mostrar un
+   * mensaje en lugar de mandar al usuario al login.
+   */
+  limpiarSesionLocal(): void {
+    this.limpiarSesion();
   }
 
   obtenerToken(): string | null {

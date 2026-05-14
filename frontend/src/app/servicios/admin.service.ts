@@ -62,6 +62,10 @@ export class AdminService {
     return this.http.post<RespuestaApi<{ cliente: Usuario }>>(`${this.base}/clientes/${id}/verificar-email`, {});
   }
 
+  eliminarCliente(id: number): Observable<RespuestaApi<null>> {
+    return this.http.delete<RespuestaApi<null>>(`${this.base}/clientes/${id}`);
+  }
+
   // ----- Bodas -----
   bodas(filtros: { estado?: EstadoBoda; q?: string } = {}): Observable<RespuestaApi<RespuestaPaginada<Boda>>> {
     let params = new HttpParams();

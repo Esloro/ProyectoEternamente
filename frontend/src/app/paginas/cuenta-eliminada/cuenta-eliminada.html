@@ -1,0 +1,66 @@
+<div class="auth-pagina">
+  <div class="auth-tarjeta texto-centrado">
+
+    <a routerLink="/" class="auth-logo">
+      <span class="marca-principal">Eternamente</span>
+      <span class="marca-secundaria">Wedding Planner</span>
+    </a>
+
+    @if (eliminada()) {
+
+      <div class="icono-grande exito">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+
+      <h1 class="auth-titulo">Cuenta eliminada</h1>
+      <p class="auth-subtitulo">
+        Tu cuenta ha sido eliminada correctamente. Tus datos personales han sido anonimizados y ya no podrás iniciar sesión con este correo.
+      </p>
+      <p class="auth-subtitulo">
+        Gracias por haber confiado en Eternamente.
+      </p>
+
+      <a routerLink="/" class="boton-primario">Volver al inicio</a>
+
+    } @else if (motivoError() === 'boda_bloqueante') {
+
+      <div class="icono-grande error">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+
+      <h1 class="auth-titulo">No hemos podido eliminar tu cuenta</h1>
+      <p class="auth-subtitulo">
+        Tu boda ha pasado a estado activo o finalizado entre la solicitud y la confirmación. Por favor, contacta con el administrador para gestionar la eliminación.
+      </p>
+
+      <a routerLink="/panel" class="boton-primario">Volver a mi panel</a>
+
+    } @else {
+
+      <div class="icono-grande error">
+        <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+
+      <h1 class="auth-titulo">Enlace no válido</h1>
+      <p class="auth-subtitulo">
+        El enlace de eliminación no es válido o ha caducado. Si quieres eliminar tu cuenta, vuelve a solicitarlo desde tu perfil.
+      </p>
+
+      <a routerLink="/login" class="boton-primario">Ir al login</a>
+
+    }
+
+    <a routerLink="/" class="auth-volver-home">← Volver a la página principal</a>
+  </div>
+</div>

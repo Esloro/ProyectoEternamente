@@ -63,11 +63,18 @@ Route::prefix('auth')->group(function () {
         ->middleware(['signed'])
         ->name('verification.verify');
 
+    // Confirmacion de eliminacion de cuenta (URL firmada que llega por correo).
+    // Es publica: el usuario podria estar ya deslogueado al abrir el email.
+    Route::get('/confirmar-eliminar-cuenta/{id}', [AutenticacionController::class, 'confirmarEliminacionCuenta'])
+        ->middleware(['signed'])
+        ->name('cuenta.eliminar');
+
     // Requieren autenticacion
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/yo',                       [AutenticacionController::class, 'yo']);
         Route::post('/logout',                  [AutenticacionController::class, 'logout']);
         Route::post('/reenviar-verificacion',   [AutenticacionController::class, 'reenviarVerificacion']);
+        Route::post('/solicitar-eliminar-cuenta',[AutenticacionController::class, 'solicitarEliminacionCuenta']);
     });
 });
 
@@ -134,6 +141,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'verified', 'es.administrado
     Route::get('/clientes',                         [AdminUsuarioController::class, 'index']);
     Route::get('/clientes/{id}',                    [AdminUsuarioController::class, 'show']);
     Route::post('/clientes/{id}/verificar-email',   [AdminUsuarioController::class, 'verificarEmail']);
+    Route::delete('/clientes/{id}',                 [AdminUsuarioController::class, 'destroy']);
 
     // Bodas
     Route::get('/bodas',                            [AdminBodaController::class, 'index']);

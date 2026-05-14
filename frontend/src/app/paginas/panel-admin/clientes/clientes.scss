@@ -93,3 +93,69 @@
 
   &:hover { background: #ffe69c; }
 }
+
+.btn-eliminar {
+  padding: 0.25rem 0.7rem;
+  background: #fbe9e7;
+  color: #c0392b;
+  border: 1px solid #f3c2c2;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: #f5c6c0; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  &.grande {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    background: #c0392b;
+    color: var(--color-blanco);
+    border-color: #c0392b;
+
+    &:hover:not(:disabled) { background: #962d22; }
+  }
+}
+
+/* ---- Modal de confirmacion ---- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: 1rem;
+}
+
+.modal-tarjeta {
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+  h3 {
+    color: #c0392b;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  p {
+    color: var(--color-texto-secundario);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}

@@ -91,5 +91,78 @@
       </form>
     </div>
 
+    <!-- Zona peligrosa: eliminar cuenta -->
+    <div class="perfil-seccion zona-peligrosa">
+      <h2>Eliminar mi cuenta</h2>
+
+      @if (bodaBloqueaEliminacion()) {
+        <p class="aviso-bloqueo">
+          Tu boda está actualmente <strong>{{ bodaService.bodaActual()?.estado === 'activa' ? 'activa' : 'finalizada' }}</strong>, por lo que no puedes eliminar tu cuenta directamente.
+          Para eliminarla, por favor contacta con el administrador desde el chat de la boda o en
+          <a href="mailto:contacto@eternamente.com">contacto&#64;eternamente.com</a>.
+        </p>
+      } @else {
+        <p>
+          Si eliminas tu cuenta no podrás volver a iniciar sesión con este correo y tus datos personales
+          (nombre, email y teléfono) serán anonimizados. La información asociada a tu boda se conservará
+          en nuestros registros internos por motivos administrativos.
+        </p>
+        <div class="form-acciones">
+          <button type="button" class="boton-peligro" (click)="abrirModalEliminar()">
+            Eliminar mi cuenta
+          </button>
+        </div>
+      }
+    </div>
+
   </div>
 </div>
+
+@if (modalEliminarAbierto()) {
+  <div class="modal-fondo" (click)="cerrarModalEliminar()">
+    <div class="modal-tarjeta" (click)="$event.stopPropagation()">
+      <h3>Confirmar eliminación de cuenta</h3>
+
+      @if (!exitoEliminacion()) {
+        <p>
+          Te enviaremos un email con un enlace para confirmar la eliminación. Una vez confirmes,
+          tus datos personales se anonimizarán y la cuenta quedará inhabilitada.
+        </p>
+
+        <label class="checkbox-confirmacion">
+          <input
+            type="checkbox"
+            [checked]="aceptaCondiciones()"
+            (change)="aceptaCondiciones.set($any($event.target).checked)"
+          />
+          Entiendo que esta acción es irreversible y mis datos personales se anonimizarán.
+        </label>
+
+        @if (errorEliminacion()) {
+          <div class="auth-alerta error">{{ errorEliminacion() }}</div>
+        }
+
+        <div class="modal-acciones">
+          <button type="button" class="boton-secundario" (click)="cerrarModalEliminar()" [disabled]="enviandoEliminacion()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="boton-peligro"
+            [disabled]="!aceptaCondiciones() || enviandoEliminacion()"
+            (click)="confirmarSolicitudEliminacion()"
+          >
+            {{ enviandoEliminacion() ? 'Enviando…' : 'Enviar email de confirmación' }}
+          </button>
+        </div>
+      } @else {
+        <div class="auth-alerta exito">{{ exitoEliminacion() }}</div>
+        <div class="modal-acciones">
+          <button type="button" class="boton-primario" (click)="cerrarModalEliminar()">
+            Entendido
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,30 @@
+:host { display: block; }
+
+.texto-centrado {
+  text-align: center;
+}
+
+.icono-grande {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto var(--espacio-sm);
+}
+
+.icono-grande.exito {
+  background: rgba(107, 142, 90, 0.1);
+  color: var(--color-exito);
+}
+
+.icono-grande.error {
+  background: rgba(184, 84, 80, 0.1);
+  color: var(--color-error);
+}
+
+.boton-primario {
+  display: inline-block;
+  margin-top: var(--espacio-sm);
+}

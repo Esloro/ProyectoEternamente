@@ -7,7 +7,9 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RecuperarPasswordRequest;
 use App\Http\Requests\Auth\RegistroRequest;
 use App\Http\Requests\Auth\ResetearPasswordRequest;
+use App\Models\Boda;
 use App\Models\Usuario;
+use App\Notifications\EliminarCuentaNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
@@ -151,5 +153,68 @@ class AutenticacionController extends Controller
         return $estado === Password::PASSWORD_RESET
             ? $this->ok(null, 'Contraseña actualizada correctamente.')
             : $this->ko('No se ha podido restablecer la contraseña. El enlace puede haber caducado.', 400);
+    }
+
+    /**
+     * El cliente solicita la eliminacion de su cuenta. Solo permitido si
+     * no tiene ninguna boda en estado activa o finalizada (en esos casos
+     * debe contactar con el administrador). Si pasa la validacion, se le
+     * envia un email con un enlace firmado para confirmar.
+     */
+    public function solicitarEliminacionCuenta(Request $request)
+    {
+        $usuario = $request->user();
+
+        if ($usuario->esAdministrador()) {
+            return $this->ko('Los administradores no pueden auto-eliminar su cuenta.', 403);
+        }
+
+        $estadosBloqueantes = [Boda::ESTADO_ACTIVA, Boda::ESTADO_FINALIZADA];
+        $tieneBodaBloqueante = $usuario->bodas()
+            ->whereIn('estado', $estadosBloqueantes)
+            ->exists();
+
+        if ($tieneBodaBloqueante) {
+            return $this->ko(
+                'No puedes eliminar tu cuenta porque tienes una boda activa o finalizada. Contacta con el administrador para que gestione la eliminación.',
+                403
+            );
+        }
+
+        $usuario->notify(new EliminarCuentaNotification);
+
+        return $this->ok(null, 'Te hemos enviado un email para confirmar la eliminación. Revisa tu bandeja de entrada.');
+    }
+
+    /**
+     * Endpoint al que apunta el enlace firmado del email de confirmacion.
+     * Anonimiza los datos personales del usuario y aplica soft delete.
+     * Despues redirige al frontend a la pagina /cuenta-eliminada.
+     */
+    public function confirmarEliminacionCuenta(Request $request, int $id)
+    {
+        $usuario = Usuario::find($id);
+
+        // Si ya fue eliminado, redirigimos igualmente al frontend con un
+        // flag para que muestre el mensaje (idempotente: el enlace puede
+        // haberse abierto dos veces).
+        if (! $usuario) {
+            return redirect(config('app.frontend_url') . '/cuenta-eliminada?ok=1');
+        }
+
+        // Volvemos a validar la condicion por si el estado cambio entre
+        // la solicitud y la confirmacion (boda paso a activa, etc.)
+        $estadosBloqueantes = [Boda::ESTADO_ACTIVA, Boda::ESTADO_FINALIZADA];
+        $tieneBodaBloqueante = $usuario->bodas()
+            ->whereIn('estado', $estadosBloqueantes)
+            ->exists();
+
+        if ($tieneBodaBloqueante) {
+            return redirect(config('app.frontend_url') . '/cuenta-eliminada?error=boda_bloqueante');
+        }
+
+        $usuario->anonimizarYEliminar();
+
+        return redirect(config('app.frontend_url') . '/cuenta-eliminada?ok=1');
     }
 }

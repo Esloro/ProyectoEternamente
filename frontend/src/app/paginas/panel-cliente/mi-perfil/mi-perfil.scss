@@ -77,7 +77,116 @@
   margin-top: 0.5rem;
 }
 
+.zona-peligrosa {
+  border: 1px solid #f3c2c2;
+
+  h2 {
+    color: #c0392b;
+  }
+
+  p {
+    color: var(--color-texto-secundario);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .aviso-bloqueo {
+    background: #fff7ed;
+    border-left: 4px solid #e0a458;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radio-pequeno);
+    margin-bottom: 0;
+  }
+
+  .aviso-bloqueo a {
+    color: var(--color-dorado-oscuro);
+    text-decoration: underline;
+  }
+}
+
+.boton-peligro {
+  background: #c0392b;
+  color: var(--color-blanco);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radio-pequeno);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background var(--transicion-rapida);
+
+  &:hover:not(:disabled) {
+    background: #962d22;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* ---- Modal de confirmacion ---- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  padding: 1rem;
+}
+
+.modal-tarjeta {
+  background: var(--color-blanco);
+  border-radius: var(--radio-medio);
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+  h3 {
+    color: #c0392b;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  p {
+    color: var(--color-texto-secundario);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+}
+
+.checkbox-confirmacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  background: var(--color-blanco-roto);
+  border-radius: var(--radio-pequeno);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+
+  input[type='checkbox'] {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+  }
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 500px) {
   .fila-doble { grid-template-columns: 1fr; }
   .perfil-seccion { padding: 1.5rem 1rem; }
+  .modal-tarjeta { padding: 1.5rem; }
+  .modal-acciones { flex-direction: column-reverse; .boton-primario, .boton-peligro, .boton-secundario { width: 100%; } }
 }
