@@ -17,12 +17,13 @@ class VerificarEmailNotification extends VerifyEmailBase
         $url = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject('Confirma tu correo electronico - Wedding Planner')
+            ->subject('Confirma tu correo electrónico - Eternamente')
             ->greeting('¡Hola ' . $notifiable->nombre . '!')
-            ->line('Gracias por registrarte en Wedding Planner. Por favor, confirma tu correo electronico haciendo clic en el siguiente boton.')
+            ->line('Gracias por registrarte en Eternamente. Confirma tu correo electrónico haciendo clic en el siguiente botón para acceder a tu panel personal.')
             ->action('Confirmar correo', $url)
+            ->line('Una vez confirmado tu correo, realiza el cuestionario inicial y en breve tu wedding planner se pondrá en contacto contigo para empezar a organizar vuestro gran día.')
             ->line('Este enlace caduca en 60 minutos.')
             ->line('Si no creaste una cuenta, puedes ignorar este mensaje.')
-            ->salutation('Un saludo, el equipo de Wedding Planner.');
+            ->salutation('Un saludo, el equipo de Eternamente.');
     }
 }
