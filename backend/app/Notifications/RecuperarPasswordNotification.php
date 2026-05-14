@@ -19,12 +19,12 @@ class RecuperarPasswordNotification extends ResetPasswordBase
              . '&email=' . urlencode($notifiable->getEmailForPasswordReset());
 
         return (new MailMessage)
-            ->subject('Restablece tu contraseña - Wedding Planner')
+            ->subject('Restablece tu contraseña - Eternamente')
             ->greeting('¡Hola ' . $notifiable->nombre . '!')
-            ->line('Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.')
+            ->line('Hemos recibido una solicitud para restablecer la contraseña de tu cuenta de Eternamente.')
             ->action('Restablecer contraseña', $url)
             ->line('Este enlace caduca en 60 minutos.')
             ->line('Si no solicitaste este cambio, puedes ignorar este mensaje.')
-            ->salutation('Un saludo, el equipo de Wedding Planner.');
+            ->salutation('Un saludo, el equipo de Eternamente.');
     }
 }

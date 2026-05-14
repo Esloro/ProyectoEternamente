@@ -19,5 +19,5 @@ Recibido el {{ $mensaje->created_at->format('d/m/Y H:i') }}.
 Ver en el panel
 @endcomponent
 
-Wedding Planner
+Eternamente · Wedding Planner
 @endcomponent

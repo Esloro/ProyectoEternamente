@@ -54,7 +54,14 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'frontend_url' => env('FRONTEND_URL', 'http://localhost:4200'),
+    // FRONTEND_URL puede venir como una sola URL o como lista separada por
+    // comas (si alguien la reutiliza para CORS). Para construir enlaces de
+    // emails y redirecciones siempre nos quedamos con la primera, ya
+    // saneada (sin barra final ni espacios).
+    'frontend_url' => rtrim(
+        trim(explode(',', env('FRONTEND_URL', 'http://localhost:4200'))[0]),
+        '/'
+    ),
 
     /*
     |--------------------------------------------------------------------------
