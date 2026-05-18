@@ -195,7 +195,7 @@ button {
   transform: translateY(0);
 }
 
-/* Fade-in para el hero (al cargar la pagina) */
+/* Hero */
 @keyframes fadeInArriba {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }

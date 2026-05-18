@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Eternamente">
+  <!-- Fondo crema con esquinas redondeadas para visibilidad en pestañas claras u oscuras -->
+  <rect width="64" height="64" rx="14" fill="#FAF7F2"/>
+
+  <!-- Espiga dorada (replica de la rama del logo de la navbar, escalada al favicon) -->
+  <g transform="translate(2 6) scale(1.2)" fill="#C9A961" stroke="#C9A961" stroke-linecap="round">
+    <!-- Tallo curvo -->
+    <path d="M5 42 Q9 30 13 19 Q16 11 19 4" stroke-width="1.2" fill="none"/>
+    <!-- Granos del lado izquierdo -->
+    <path d="M7.5 35 Q3 33 5 30 Q9.5 30.5 7.5 35Z"/>
+    <path d="M10 27 Q5.5 25 7.5 22 Q12 22.5 10 27Z"/>
+    <path d="M13 19 Q8.5 17 10.5 14 Q15 14.5 13 19Z"/>
+    <!-- Granos del lado derecho -->
+    <path d="M11 31.5 Q15.5 31 14.5 27.5 Q10 27.5 11 31.5Z"/>
+    <path d="M14 23.5 Q18.5 23 17.5 19.5 Q13 19.5 14 23.5Z"/>
+    <path d="M17 14.5 Q21.5 14 20.5 10.5 Q16 10.5 17 14.5Z"/>
+  </g>
+
+  <!-- "E" elegante en oro oscuro, dibujada con formas sólidas para que se lea a 16px -->
+  <g fill="#A8893F">
+    <!-- Asta vertical -->
+    <rect x="31" y="13" width="5" height="40"/>
+    <!-- Brazo superior -->
+    <rect x="31" y="13" width="21" height="5"/>
+    <!-- Brazo central (algo mas corto, al estilo serif clasico) -->
+    <rect x="31" y="31" width="17" height="4.5"/>
+    <!-- Brazo inferior -->
+    <rect x="31" y="48" width="21" height="5"/>
+    <!-- Pequenos remates verticales en los extremos derechos para evocar el serif -->
+    <rect x="50" y="13" width="2" height="7"/>
+    <rect x="50" y="46" width="2" height="7"/>
+  </g>
+</svg>

@@ -29,6 +29,7 @@ backend/public/storage
 # ---- Editores ----
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 
