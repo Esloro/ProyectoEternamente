@@ -1,8 +1,10 @@
-# Wedding Planner
+/********************* @Esmeralda López Rodero ********************/
+# ETERNAMENTE - Trabajo de Fin de Grado de 2º DAW.
 
-Aplicación web completa para una agencia de Wedding Planner — Trabajo de Fin de Grado de 2º DAW.
-
-> **Estado actual:** proyecto **completado** (todos los pasos implementados y build de producción limpio).
+Trabajo de Fin de Grado de 2º DAW.
+Se trata de una aplicación web completa para una agencia de organización de bodas. Su finalidad es digitalizar 
+y centralizar la relación entre la pareja y la coordinadora e integrar todas las herramientas en una misma web
+sencilla e intuitiva.
 
 ---
 
@@ -152,16 +154,3 @@ docker run -d -p 80:80 wedding-planner-frontend:prod
 ```
 
 ---
-
-## Plan de implementación (completado)
-
-- [x] **Paso 1 — Estructura + Docker:** carpetas, Dockerfiles, `docker-compose.yml`.
-- [x] **Paso 2 — Backend Laravel:** migraciones, modelos, seeders, autenticación con Sanctum y verificación de email.
-- [x] **Paso 3 — Endpoints de la API:** autenticación, boda, proveedores, chat, contacto, admin.
-- [x] **Paso 4 — Frontend Angular:** estructura, rutas, servicios, guards, interceptor HTTP.
-- [x] **Paso 5 — Landing page** completa con animaciones.
-- [x] **Paso 6 — Flujo de registro / login / recuperar contraseña / verificación email.**
-- [x] **Paso 7 — Cuestionario inicial y panel cliente** (resumen, personalización, mesas drag-drop, presupuesto, perfil).
-- [x] **Paso 8 — Panel admin** (dashboard, clientes, bodas con cambio de estado, catálogo CRUD, mensajes de contacto).
-- [x] **Paso 9 — Chat con polling** (cliente ↔ admin, intervalo 7 s, marcado de leídos).
-- [x] **Paso 10 — Build de producción limpio** (sin errores TypeScript ni errores de build).
