@@ -116,8 +116,10 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ## 🏛 Arquitectura
 
 ### Entorno de desarrollo (local, con Docker)
-
+<div align="center">
+  ![Portfolio](ImagenesReadme/ArquitecturaGeneralpng.png)
 ```
+
                <img width="1265" height="700" alt="image" src="https://github.com/user-attachments/assets/597a591f-26fd-46f8-a79d-aa3cb43da486" />
     
 
@@ -126,29 +128,10 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ### Entorno de producción
 
 ```
-    <img width="527" height="581" alt="image" src="https://github.com/user-attachments/assets/b679910d-254c-43b8-beed-3019aa114092" />
+  ![Portfolio](ImagenesReadme/EntornoProducción.png)
 
-        ┌──────────────────────┐                 ┌────────────────────┐
-        │   Usuario público    │ ───── HTTPS ──► │   Vercel (CDN)     │
-        └──────────┬───────────┘                 │  Frontend Angular  │
-                   │                             └─────────┬──────────┘
-                   │  HTTPS (api.eternamente.tech)         │  fetch /api
-                   ▼                                       │
-   ┌──────────────────────────────────────────┐ ◄──────────┘
-   │      DigitalOcean Droplet                │
-   │  ┌──────────────────────────────────┐    │
-   │  │  Caddy (reverse proxy + HTTPS)   │    │           ┌─────────────┐
-   │  │       Let's Encrypt              │    │  SMTP     │   Brevo     │
-   │  └────────────────┬─────────────────┘    │ ────────► │ (envío real │
-   │                   ▼                      │           │  de emails) │
-   │  ┌──────────────────────────────────┐    │           └─────────────┘
-   │  │       Backend Laravel 11         │    │
-   │  └────────────────┬─────────────────┘    │
-   │                   ▼                      │
-   │  ┌──────────────────────────────────┐    │
-   │  │            MySQL 8               │    │
-   │  └──────────────────────────────────┘    │
-   └──────────────────────────────────────────┘
+  
+</div>
 ```
 
 El frontend Angular consume la API REST que expone Laravel bajo el prefijo `/api`. Sanctum emite tokens en el login que el frontend almacena y reenvía en cada petición mediante un _interceptor_. Las rutas del backend están agrupadas en cuatro niveles de acceso: **públicas**, **autenticadas**, **cliente con boda activa** y **administrador**.
@@ -291,16 +274,14 @@ docker compose -f docker-compose.prod.yml up -d --build
 <div align="center">
 
 **Landing pública**
-![Landing](docs/imagenes/landing.png)
+![Landing](ImagenesReadme/LandingPage.png)
+![Portfolio](ImagenesReadme/Portfolio.png)
 
 **Panel del cliente — Resumen de la boda**
-![Panel cliente](docs/imagenes/panel-cliente.png)
-
-**Organizador de mesas**
-![Organizador de mesas](docs/imagenes/organizador-mesas.png)
+![Panel cliente](ImagenesReadme/PanelCliente.png)
 
 **Panel del administrador — Dashboard**
-![Panel admin](docs/imagenes/panel-admin.png)
+![Panel admin](ImagenesReadme/PanelAdminpng)
 
 </div>
 
