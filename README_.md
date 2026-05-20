@@ -114,20 +114,15 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ---
 
 ## 🏛 Arquitectura
-
+```
 ### Entorno de desarrollo (local, con Docker)
 <div align="center">
   ![Portfolio](ImagenesReadme/ArquitecturaGeneralpng.png)
-```
 
-               <img width="1265" height="700" alt="image" src="https://github.com/user-attachments/assets/597a591f-26fd-46f8-a79d-aa3cb43da486" />
-    
-
-```
 
 ### Entorno de producción
 
-```
+
   ![Portfolio](ImagenesReadme/EntornoProducción.png)
 
   
@@ -281,7 +276,7 @@ docker compose -f docker-compose.prod.yml up -d --build
 ![Panel cliente](ImagenesReadme/PanelCliente.png)
 
 **Panel del administrador — Dashboard**
-![Panel admin](ImagenesReadme/PanelAdminpng)
+![Panel admin](ImagenesReadme/PanelAdmin.png)
 
 </div>
 
