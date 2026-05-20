@@ -118,32 +118,16 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ### Entorno de desarrollo (local, con Docker)
 
 ```
-                              ┌────────────────────────────┐
-                              │   Navegador del usuario    │
-                              └──────────────┬─────────────┘
-                                             │  HTTP
-                                             ▼
-   ┌─────────────────────────────────────────────────────────────────┐
-   │                       Red Docker (wp_red)                       │
-   │                                                                 │
-   │  ┌────────────┐        ┌────────────┐        ┌──────────────┐   │
-   │  │  Frontend  │  REST  │  Backend   │  SQL   │   MySQL 8    │   │
-   │  │ Angular 21 │ ─────► │ Laravel 11 │ ─────► │  wedding_    │   │
-   │  │   :4200    │ ◄───── │   :8000    │ ◄───── │   planner    │   │
-   │  └────────────┘ tokens └─────┬──────┘        └──────┬───────┘   │
-   │                              │                      │           │
-   │                              │ SMTP                 │           │
-   │                              ▼                      ▼           │
-   │                       ┌────────────┐         ┌────────────┐     │
-   │                       │  Mailhog   │         │ phpMyAdmin │     │
-   │                       │ :1025/8025 │         │   :8080    │     │
-   │                       └────────────┘         └────────────┘     │
-   └─────────────────────────────────────────────────────────────────┘
+               <img width="1265" height="700" alt="image" src="https://github.com/user-attachments/assets/597a591f-26fd-46f8-a79d-aa3cb43da486" />
+    
+
 ```
 
 ### Entorno de producción
 
 ```
+    <img width="527" height="581" alt="image" src="https://github.com/user-attachments/assets/b679910d-254c-43b8-beed-3019aa114092" />
+
         ┌──────────────────────┐                 ┌────────────────────┐
         │   Usuario público    │ ───── HTTPS ──► │   Vercel (CDN)     │
         └──────────┬───────────┘                 │  Frontend Angular  │
