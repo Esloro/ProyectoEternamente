@@ -114,7 +114,7 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ---
 
 ## 🏛 Arquitectura
-```
+
 ### Entorno de desarrollo (local, con Docker)
 <div align="center">
   ![Portfolio](ImagenesReadme/ArquitecturaGeneralpng.png)
@@ -127,7 +127,7 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 
   
 </div>
-```
+
 
 El frontend Angular consume la API REST que expone Laravel bajo el prefijo `/api`. Sanctum emite tokens en el login que el frontend almacena y reenvía en cada petición mediante un _interceptor_. Las rutas del backend están agrupadas en cuatro niveles de acceso: **públicas**, **autenticadas**, **cliente con boda activa** y **administrador**.
 
