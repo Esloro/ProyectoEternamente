@@ -116,14 +116,15 @@ Tipografía clásica de **serif + sans-serif**, importadas desde Google Fonts:
 ## 🏛 Arquitectura
 
 ### Entorno de desarrollo (local, con Docker)
+
 <div align="center">
-  ![Portfolio](ImagenesReadme/ArquitecturaGeneralpng.png)
+  ![General](ImagenesReadme/ArquitecturaGeneralpng.png)
 
 
 ### Entorno de producción
 
 
-  ![Portfolio](ImagenesReadme/EntornoProducción.png)
+  ![Producción](ImagenesReadme/EntornoProducción.png)
 
   
 </div>
